@@ -16,6 +16,7 @@ export default function Register() {
   });
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
+  const [toast, setToast] = useState('');
 
   const validOtps = ['8492', '3715', '9021', '1478', '6523', '7890', '4321', '5647', '2198', '8834'];
 
@@ -33,7 +34,12 @@ export default function Register() {
       return;
     }
 
+    const randomOtp = validOtps[Math.floor(Math.random() * validOtps.length)];
     setStep('otp');
+    setTimeout(() => {
+      setToast(`Messages: Your Green Sathi OTP is ${randomOtp}`);
+      setTimeout(() => setToast(''), 2500);
+    }, 3000);
   };
 
   const handleVerifyOtp = (e) => {
@@ -63,6 +69,19 @@ export default function Register() {
         <title>Register | Green Sathi</title>
       </Head>
       <div className="min-h-screen flex flex-col p-6 bg-background dark:bg-charcoal relative overflow-hidden font-sans transition-colors duration-300">
+        
+        {/* Toast Notification */}
+        {toast && (
+          <div className="fixed top-10 left-1/2 -translate-x-1/2 z-[9999] bg-[#1A1A1A] text-white px-6 py-4 rounded-xl font-medium shadow-2xl animate-in slide-in-from-top-4 fade-in duration-300 w-full max-w-sm border border-gray-700 flex items-center gap-3">
+            <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+            {toast}
+          </div>
+        )}
+
         {/* Soft Background Patterns */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-secondary rounded-full filter blur-[80px] opacity-60 translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none dark:hidden"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary rounded-full filter blur-[100px] opacity-10 -translate-x-1/3 translate-y-1/3 z-0 pointer-events-none dark:hidden"></div>
