@@ -10,47 +10,48 @@ export default function Login() {
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
+  const [toast, setToast] = useState('');
 
   const validOtps = ['8492', '3715', '9021', '1478', '6523', '7890', '4321', '5647', '2198', '8834'];
 
   const handleSendOtp = (e) => {
     e.preventDefault();
     setError('');
-    if (phone.length >= 10) {
-      setStep('otp');
-    } else {
+    
+    if (phone.length < 10) {
       setError("Please enter a valid 10-digit phone number");
+      return;
     }
+
+    const usersDB = JSON.parse(localStorage.getItem('greenSathiUsersDB') || '[]');
+    const userExists = usersDB.find(u => u.mobileNumber === phone);
+
+    if (!userExists) {
+      setError("Number not registered. Please register first.");
+      return;
+    }
+
+    const randomOtp = validOtps[Math.floor(Math.random() * validOtps.length)];
+    setToast(`Messages: Your Green Sathi OTP is ${randomOtp}`);
+    setTimeout(() => setToast(''), 5000);
+    setStep('otp');
   };
 
   const handleVerifyOtp = (e) => {
     e.preventDefault();
     setError('');
     if (validOtps.includes(otp)) {
-      // 3 Sample User Presets check
-      const presets = {
-        "9999900001": {
-          fullName: "Pooja Reddy", mobileNumber: "9999900001", village: "Anantapur", districtPin: "Anantapur, 515001", idType: "Aadhaar", idNumber: "xxxx-xxxx-1234"
-        },
-        "9999900002": {
-          fullName: "Sunita Devi", mobileNumber: "9999900002", village: "Bishnupur", districtPin: "Bankura, 722122", idType: "Voter ID", idNumber: "ABC1234567"
-        },
-        "9999900003": {
-          fullName: "Lakshmi Bai", mobileNumber: "9999900003", village: "Chanderi", districtPin: "Ashoknagar, 473446", idType: "Ration Card", idNumber: "RC-0987654321"
-        }
-      };
-
-      if (presets[phone]) {
-        localStorage.setItem('greenSathiUserProfile', JSON.stringify(presets[phone]));
-      } else if (!localStorage.getItem('greenSathiUserProfile')) {
-        // Fallback if they didn't register and used a random phone
-        localStorage.setItem('greenSathiUserProfile', JSON.stringify({
-          fullName: "Changemaker", mobileNumber: phone, village: "Unknown", districtPin: "Unknown", idType: "Aadhaar", idNumber: "0000"
-        }));
+      const usersDB = JSON.parse(localStorage.getItem('greenSathiUsersDB') || '[]');
+      const userProfile = usersDB.find(u => u.mobileNumber === phone);
+      
+      if (userProfile) {
+        localStorage.setItem('greenSathiUserProfile', JSON.stringify(userProfile));
+        // Force the role to whatever is saved in DB, overriding the toggle switch if necessary
+        localStorage.setItem('greenSathiRole', userProfile.role || 'user');
+        router.push(userProfile.role === 'verifier' ? '/admin' : '/dashboard');
+      } else {
+        setError("Error fetching profile. Please register again.");
       }
-
-      localStorage.setItem('greenSathiRole', role);
-      router.push(role === 'user' ? '/dashboard' : '/admin');
     } else {
       setError("Invalid OTP. Please check and try again.");
     }
@@ -61,7 +62,19 @@ export default function Login() {
       <Head>
         <title>Login | Green Sathi</title>
       </Head>
-      <div className="min-h-screen flex flex-col p-6 bg-background relative overflow-hidden font-sans">
+      
+      {toast && (
+        <div className="fixed top-10 left-1/2 -translate-x-1/2 z-[9999] bg-[#1A1A1A] text-white px-6 py-4 rounded-xl font-medium shadow-2xl animate-in slide-in-from-top-4 fade-in duration-300 w-full max-w-sm border border-gray-700 flex items-center gap-3">
+          <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+            </svg>
+          </div>
+          {toast}
+        </div>
+      )}
+
+      <div className="min-h-screen flex flex-col p-6 bg-background dark:bg-charcoal relative overflow-hidden font-sans transition-colors duration-300">
         {/* Soft Background Patterns */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-secondary rounded-full filter blur-[80px] opacity-60 translate-x-1/2 -translate-y-1/2 z-0"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary rounded-full filter blur-[100px] opacity-10 -translate-x-1/3 translate-y-1/3 z-0"></div>
@@ -127,7 +140,7 @@ export default function Login() {
                 {error && <p className="text-red-500 font-semibold text-sm animate-in fade-in">{error}</p>}
                 <button 
                   type="submit"
-                  className="w-full mt-4 py-4 bg-primary text-white font-bold rounded-2xl shadow-lg hover:shadow-xl active:scale-95 transition-all text-lg"
+                  className="w-full mt-4 py-4 bg-primary text-white font-bold rounded-2xl shadow-md hover:bg-[#2A5A46] hover:shadow-lg active:scale-95 transition-all text-lg"
                 >
                   Send OTP
                 </button>
@@ -148,7 +161,7 @@ export default function Login() {
                 {error && <p className="text-red-500 font-semibold text-sm animate-in fade-in">{error}</p>}
                 <button 
                   type="submit"
-                  className="w-full mt-4 py-4 bg-primary text-white font-bold rounded-2xl shadow-lg hover:shadow-xl active:scale-95 transition-all text-lg"
+                  className="w-full mt-4 py-4 bg-primary text-white font-bold rounded-2xl shadow-md hover:bg-[#2A5A46] hover:shadow-lg active:scale-95 transition-all text-lg"
                 >
                   Verify & Login
                 </button>

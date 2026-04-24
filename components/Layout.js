@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Home, PlusCircle, Wallet, BookOpen, LogOut, Info, X } from 'lucide-react';
+import { Home, PlusCircle, Wallet, BookOpen, LogOut, Info, X, Menu, Moon, Sun } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Layout({ children }) {
   const router = useRouter();
   const [role, setRole] = useState('user');
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
@@ -21,7 +23,24 @@ export default function Layout({ children }) {
     // Load profile for modal
     const profile = JSON.parse(localStorage.getItem('greenSathiUserProfile'));
     if (profile) setUserProfile(profile);
+
+    // Initial theme check
+    if (document.documentElement.classList.contains('dark')) {
+      setIsDarkMode(true);
+    }
   }, []);
+
+  const toggleDarkMode = () => {
+    if (isDarkMode) {
+      document.documentElement.classList.remove('dark');
+      localStorage.theme = 'light';
+      setIsDarkMode(false);
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.theme = 'dark';
+      setIsDarkMode(true);
+    }
+  };
 
   const userNavItems = [
     { name: 'Home', href: '/dashboard', icon: Home },
@@ -49,12 +68,12 @@ export default function Layout({ children }) {
   };
 
   return (
-    <div className="flex min-h-screen bg-background font-sans">
+    <div className="flex min-h-screen bg-background dark:bg-charcoal font-sans transition-colors duration-300">
       
       {/* Profile Modal */}
       {showProfileModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white rounded-3xl shadow-xl w-full max-w-sm overflow-hidden animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl w-full max-w-sm overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="bg-primary p-4 flex justify-between items-center text-white">
               <h2 className="font-bold text-lg flex items-center gap-2"><Info className="w-5 h-5"/> Profile Details</h2>
               <button onClick={() => setShowProfileModal(false)} className="hover:bg-white/20 p-1 rounded-full transition-colors">
@@ -64,14 +83,14 @@ export default function Layout({ children }) {
             <div className="p-6 flex flex-col gap-4">
               {userProfile ? (
                 <>
-                  <div><span className="text-sm text-gray-500 font-bold uppercase">Full Name</span><p className="font-semibold text-charcoal text-lg">{userProfile.fullName}</p></div>
-                  <div><span className="text-sm text-gray-500 font-bold uppercase">Mobile Number</span><p className="font-semibold text-charcoal text-lg">+91 {userProfile.mobileNumber}</p></div>
-                  <div><span className="text-sm text-gray-500 font-bold uppercase">Village / Gram</span><p className="font-semibold text-charcoal text-lg">{userProfile.village}</p></div>
-                  <div><span className="text-sm text-gray-500 font-bold uppercase">District & PIN</span><p className="font-semibold text-charcoal text-lg">{userProfile.districtPin}</p></div>
-                  <div><span className="text-sm text-gray-500 font-bold uppercase">ID ({userProfile.idType})</span><p className="font-semibold text-charcoal text-lg">{userProfile.idNumber}</p></div>
+                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">Full Name</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.fullName}</p></div>
+                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">Mobile Number</span><p className="font-semibold text-charcoal dark:text-white text-lg">+91 {userProfile.mobileNumber}</p></div>
+                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">Village / Gram</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.village}</p></div>
+                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">District & PIN</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.districtPin}</p></div>
+                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">ID ({userProfile.idType})</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.idNumber}</p></div>
                 </>
               ) : (
-                <p className="text-gray-500 text-center font-medium">No registration profile found.</p>
+                <p className="text-gray-500 dark:text-gray-400 text-center font-medium">No registration profile found.</p>
               )}
             </div>
           </div>
@@ -79,7 +98,7 @@ export default function Layout({ children }) {
       )}
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 shadow-sm fixed h-full z-50">
+      <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 shadow-sm fixed h-full z-50 transition-colors duration-300">
         <div 
           className="p-6 flex items-center gap-3 cursor-pointer hover:bg-gray-50 transition-colors"
           onClick={() => setShowProfileModal(true)}
@@ -93,7 +112,7 @@ export default function Layout({ children }) {
             const isActive = router.pathname === item.href;
             return (
               <Link key={item.name} href={item.href}>
-                <div className={`flex items-center px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-primary text-white shadow-md font-bold' : 'text-gray-500 hover:bg-secondary/30 hover:text-primary font-semibold'}`}>
+                <div className={`flex items-center px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-primary text-white shadow-md font-bold' : 'text-gray-500 dark:text-gray-400 hover:bg-secondary/30 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white font-semibold'}`}>
                   <item.icon className="w-5 h-5 mr-3" />
                   {item.name}
                 </div>
@@ -102,11 +121,15 @@ export default function Layout({ children }) {
           })}
         </nav>
 
-        <div className="p-4 border-t border-gray-100 flex flex-col gap-2">
+        <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-2">
+          <button onClick={toggleDarkMode} className="flex items-center justify-between px-4 py-3 w-full rounded-xl bg-gray-100 dark:bg-gray-800 text-charcoal dark:text-white font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+            <span className="flex items-center"><Moon className="w-4 h-4 mr-2 hidden dark:block"/><Sun className="w-4 h-4 mr-2 dark:hidden"/> Theme</span>
+            <span className="text-xs opacity-60 uppercase">{isDarkMode ? 'Dark' : 'Light'}</span>
+          </button>
           <button onClick={handleDemoSwitch} className="flex items-center justify-center px-4 py-3 w-full rounded-xl bg-charcoal text-white font-bold text-sm shadow-md hover:bg-black transition-all">
             Demo: Switch to {role === 'user' ? 'Verifier' : 'User'}
           </button>
-          <button onClick={handleLogout} className="flex items-center px-4 py-3 w-full rounded-xl text-red-500 hover:bg-red-50 font-semibold transition-all">
+          <button onClick={handleLogout} className="flex items-center px-4 py-3 w-full rounded-xl text-accent-orange hover:bg-accent-orange/10 font-semibold transition-all">
             <LogOut className="w-5 h-5 mr-3" />
             Logout
           </button>
@@ -125,45 +148,48 @@ export default function Layout({ children }) {
       {/* Mobile Navigation & Headers */}
       <div className="md:hidden">
         {/* Mobile Top Header */}
-        <div className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 p-4 flex justify-between items-center z-40">
+        <div className="fixed top-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 p-4 flex justify-between items-center z-50 transition-colors duration-300">
           <div 
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => setShowProfileModal(true)}
           >
-            <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-full border border-gray-200 shadow-sm" />
-            <span className="font-extrabold text-primary tracking-tight text-lg">Green Sathi</span>
+            <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-full border border-gray-200 dark:border-gray-700 shadow-sm" />
+            <span className="font-extrabold text-primary dark:text-white tracking-tight text-lg">Green Sathi</span>
           </div>
-          <div className="flex gap-2">
-            <button onClick={handleDemoSwitch} className="px-3 py-1.5 rounded-full bg-charcoal text-white font-bold text-xs shadow-md">
-              Switch
+          <div className="flex gap-2 items-center">
+            <button onClick={toggleDarkMode} className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-charcoal dark:text-white shadow-sm">
+              {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
-            <button onClick={handleLogout} className="px-3 py-1.5 rounded-full bg-red-100 text-red-600 font-bold text-xs shadow-sm flex items-center gap-1">
-              <LogOut className="w-3 h-3" />
-              Logout
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2 rounded-full bg-primary text-white shadow-sm">
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Bottom Nav */}
-        <nav className="fixed bottom-0 w-full bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-50 px-6 py-3 pb-safe">
-          <div className="flex justify-between items-center max-w-md mx-auto">
+        {/* Mobile Dropdown Hamburger Menu */}
+        {isMobileMenuOpen && (
+          <div className="fixed top-[73px] left-0 right-0 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 shadow-2xl z-40 animate-in slide-in-from-top-2 p-4 flex flex-col gap-2 transition-colors duration-300">
             {navItems.map((item) => {
               const isActive = router.pathname === item.href;
               return (
-                <Link key={item.name} href={item.href}>
-                  <div className="flex flex-col items-center">
-                    <div className={`p-2 rounded-xl transition-all ${isActive ? 'bg-secondary/50 text-primary' : 'text-gray-400'}`}>
-                      <item.icon className={`w-6 h-6 ${isActive ? 'stroke-[2.5px]' : ''}`} />
-                    </div>
-                    <span className={`text-[10px] mt-1 ${isActive ? 'font-bold text-primary' : 'font-medium text-gray-400'}`}>
-                      {item.name}
-                    </span>
+                <Link key={item.name} href={item.href} onClick={() => setIsMobileMenuOpen(false)}>
+                  <div className={`flex items-center px-4 py-4 rounded-xl transition-all ${isActive ? 'bg-primary text-white shadow-md font-bold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold'}`}>
+                    <item.icon className="w-6 h-6 mr-4" />
+                    <span className="text-lg">{item.name}</span>
                   </div>
                 </Link>
               )
             })}
+            <div className="border-t border-gray-100 dark:border-gray-800 my-2"></div>
+            <button onClick={handleDemoSwitch} className="flex items-center justify-center px-4 py-4 w-full rounded-xl bg-charcoal dark:bg-gray-700 text-white font-bold text-base shadow-md">
+              Switch Role to {role === 'user' ? 'Verifier' : 'User'}
+            </button>
+            <button onClick={handleLogout} className="flex items-center justify-center px-4 py-4 w-full rounded-xl bg-accent-orange/10 text-accent-orange font-bold text-base shadow-sm">
+              <LogOut className="w-5 h-5 mr-2" />
+              Logout
+            </button>
           </div>
-        </nav>
+        )}
       </div>
 
     </div>

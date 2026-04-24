@@ -1,10 +1,30 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Moon, Sun } from 'lucide-react';
 
 export default function LandingPage() {
   const router = useRouter();
   const [toast, setToast] = useState('');
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (document.documentElement.classList.contains('dark')) {
+      setIsDarkMode(true);
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    if (isDarkMode) {
+      document.documentElement.classList.remove('dark');
+      localStorage.theme = 'light';
+      setIsDarkMode(false);
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.theme = 'dark';
+      setIsDarkMode(true);
+    }
+  };
 
   const handleComingSoon = () => {
     setToast("Language support coming soon!");
@@ -18,11 +38,21 @@ export default function LandingPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-background relative overflow-hidden font-sans">
+      <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-background dark:bg-charcoal relative overflow-hidden font-sans transition-colors duration-300">
+        
+        {/* Dark Mode Toggle */}
+        <button onClick={toggleDarkMode} className="absolute top-6 right-6 p-3 rounded-full bg-white dark:bg-gray-800 text-charcoal dark:text-white shadow-md z-50">
+          {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
         
         {/* Toast Notification */}
         {toast && (
-          <div className="fixed top-10 left-1/2 -translate-x-1/2 z-50 bg-charcoal text-white px-6 py-3 rounded-full font-bold shadow-xl animate-in slide-in-from-top-4 fade-in duration-300">
+          <div className="fixed top-10 left-1/2 -translate-x-1/2 z-[9999] bg-[#1A1A1A] text-white px-6 py-4 rounded-xl font-medium shadow-2xl animate-in slide-in-from-top-4 fade-in duration-300 w-full max-w-sm border border-gray-700 flex items-center gap-3">
+            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
             {toast}
           </div>
         )}
@@ -42,12 +72,12 @@ export default function LandingPage() {
           </div>
 
           <div className="text-center mb-12">
-            <h1 className="text-3xl lg:text-4xl font-extrabold text-primary mb-2 tracking-tight">Welcome to Green Sathi</h1>
-            <p className="text-charcoal font-medium text-lg lg:text-xl">Empowering Women through Green Action</p>
+            <h1 className="text-3xl lg:text-4xl font-extrabold text-primary dark:text-white mb-2 tracking-tight">Welcome to Green Sathi</h1>
+            <p className="text-charcoal dark:text-gray-300 font-medium text-lg lg:text-xl">Empowering Women through Green Action</p>
           </div>
 
           <div className="w-full flex justify-center mb-6">
-            <span className="text-sm font-semibold uppercase tracking-widest text-primary opacity-80">
+            <span className="text-sm font-semibold uppercase tracking-widest text-primary dark:text-gray-400 opacity-80">
               Select Language
             </span>
           </div>
@@ -74,7 +104,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="w-full border-t border-gray-200 pt-6 flex flex-col gap-4">
+          <div className="w-full border-t border-gray-200 dark:border-gray-800 pt-6 flex flex-col gap-4">
             <button 
               onClick={() => router.push('/login')}
               className="w-full py-4 bg-primary text-white font-bold rounded-2xl shadow-lg hover:shadow-xl active:scale-95 transition-all text-lg flex justify-center items-center gap-2"
@@ -83,7 +113,7 @@ export default function LandingPage() {
             </button>
             <button 
               onClick={() => router.push('/register')}
-              className="w-full py-4 border-2 border-primary text-primary bg-white font-bold rounded-2xl shadow-sm hover:bg-gray-50 active:scale-95 transition-all text-lg flex justify-center items-center gap-2"
+              className="w-full py-4 border-2 border-primary dark:border-gray-600 text-primary dark:text-white bg-white dark:bg-gray-800 font-bold rounded-2xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 transition-all text-lg flex justify-center items-center gap-2"
             >
               Register as New User
             </button>

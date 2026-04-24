@@ -74,13 +74,13 @@ export default function LogAction() {
 
   if (submitted && impactInfo) {
     return (
-      <div className="h-[60vh] flex flex-col items-center justify-center text-center animate-in zoom-in duration-500 p-4">
+      <div className="h-[60vh] flex flex-col items-center justify-center text-center animate-in zoom-in duration-500 p-4 transition-colors duration-300">
         <CheckCircle2 className="w-24 h-24 text-green-500 mb-6" />
-        <h2 className="text-3xl font-extrabold text-primary mb-4">Action Logged!</h2>
-        <div className="bg-secondary/30 p-6 rounded-3xl w-full max-w-sm border border-primary/10 mb-6">
-          <p className="text-charcoal font-bold text-lg mb-2">Amazing!</p>
-          <p className="text-charcoal font-medium">
-            You earned <span className="text-primary font-black text-xl">{impactInfo.points}</span> Eco-Points and helped reduce <span className="text-green-600 font-black text-xl">{impactInfo.co2.toFixed(1)}kg</span> of Carbon Emissions!
+        <h2 className="text-3xl font-extrabold text-primary dark:text-white mb-4">Action Logged!</h2>
+        <div className="bg-secondary/30 dark:bg-gray-800 p-6 rounded-3xl w-full max-w-sm border border-primary/10 dark:border-gray-700 mb-6">
+          <p className="text-charcoal dark:text-gray-300 font-bold text-lg mb-2">Amazing!</p>
+          <p className="text-charcoal dark:text-gray-300 font-medium">
+            You earned <span className="text-primary dark:text-accent-lime font-black text-xl">{impactInfo.points}</span> Eco-Points and helped reduce <span className="text-green-600 font-black text-xl">{impactInfo.co2.toFixed(1)}kg</span> of Carbon Emissions!
           </p>
         </div>
         <p className="text-gray-500 font-medium text-sm mb-8">Your submission is pending verification.</p>
@@ -100,22 +100,22 @@ export default function LogAction() {
         <title>Log Action | Green Sathi</title>
       </Head>
 
-      <div className="flex flex-col gap-6 w-full max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="flex flex-col gap-6 w-full max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 transition-colors duration-300">
         
         <div>
-          <h1 className="text-3xl font-extrabold text-primary mb-2">Log Eco-Action</h1>
-          <p className="text-charcoal font-medium">Submit your green activities to earn credits.</p>
+          <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">Log Eco-Action</h1>
+          <p className="text-charcoal dark:text-gray-300 font-medium">Submit your green activities to earn credits.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-4">
           
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-bold text-primary">Action Type</label>
+            <label className="text-sm font-bold text-primary dark:text-gray-300">Action Type</label>
             <div className="relative">
               <select 
                 value={actionType}
                 onChange={(e) => setActionType(e.target.value)}
-                className="w-full px-4 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary outline-none appearance-none font-medium text-charcoal shadow-sm"
+                className="w-full px-4 py-4 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:border-primary outline-none appearance-none font-medium text-charcoal dark:text-white shadow-sm transition-colors"
               >
                 {actionTypes.map(type => (
                   <option key={type} value={type}>{type}</option>
@@ -128,30 +128,30 @@ export default function LogAction() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-bold text-primary">Quantity / Metric (e.g., number of trees)</label>
+            <label className="text-sm font-bold text-primary dark:text-gray-300">Quantity / Metric (e.g., number of trees)</label>
             <input 
               type="number" 
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               placeholder="Enter quantity"
-              className="w-full px-4 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-medium text-charcoal shadow-sm"
+              className="w-full px-4 py-4 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-medium text-charcoal dark:text-white shadow-sm transition-colors"
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-bold text-primary">Date</label>
+            <label className="text-sm font-bold text-primary dark:text-gray-300">Date</label>
             <input 
               type="date" 
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full px-4 py-4 rounded-2xl bg-white border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-medium text-charcoal shadow-sm"
+              className="w-full px-4 py-4 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-medium text-charcoal dark:text-white shadow-sm transition-colors"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-bold text-primary">Upload Photo Proof</label>
-              <div className="relative w-full h-full min-h-[160px] border-2 border-dashed rounded-3xl flex flex-col items-center justify-center gap-3 overflow-hidden transition-all border-gray-300 bg-gray-50 text-gray-500 hover:bg-gray-100 hover:border-primary/50 hover:text-primary cursor-pointer">
+              <label className="text-sm font-bold text-primary dark:text-gray-300">Upload Photo Proof</label>
+              <div className="relative w-full h-full min-h-[160px] border-2 border-dashed rounded-3xl flex flex-col items-center justify-center gap-3 overflow-hidden transition-all border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:border-primary/50 dark:hover:border-primary/50 hover:text-primary dark:hover:text-primary cursor-pointer">
                 <input 
                   type="file" 
                   accept="image/*" 
@@ -181,7 +181,7 @@ export default function LogAction() {
               {error && <p className="text-red-500 font-semibold text-sm animate-in fade-in">{error}</p>}
               <button 
                 type="submit"
-                className="w-full py-4 bg-primary text-white font-bold rounded-2xl shadow-lg hover:shadow-xl active:scale-95 transition-all text-lg"
+                className="w-full py-4 bg-primary text-white font-bold rounded-2xl shadow-md hover:bg-[#2A5A46] hover:shadow-lg active:scale-95 transition-all text-lg"
               >
                 Submit Action
               </button>
