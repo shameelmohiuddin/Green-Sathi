@@ -68,7 +68,7 @@ export default function Layout({ children }) {
   };
 
   return (
-    <div className="flex min-h-screen bg-background dark:bg-charcoal font-sans transition-colors duration-300">
+    <div className="flex min-h-screen bg-background dark:bg-charcoal font-sans transition-colors duration-300 overflow-x-hidden w-full">
       
       {/* Profile Modal */}
       {showProfileModal && (
@@ -104,7 +104,7 @@ export default function Layout({ children }) {
           onClick={() => setShowProfileModal(true)}
         >
           <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-full border border-gray-200 shadow-sm" />
-          <span className="text-xl font-extrabold text-primary tracking-tight">Green Sathi</span>
+          <span className="text-xl font-extrabold text-primary dark:text-white tracking-tight">Green Sathi</span>
         </div>
         
         <nav className="flex-1 px-4 py-6 space-y-2">
@@ -126,7 +126,7 @@ export default function Layout({ children }) {
             <span className="flex items-center"><Moon className="w-4 h-4 mr-2 hidden dark:block"/><Sun className="w-4 h-4 mr-2 dark:hidden"/> Theme</span>
             <span className="text-xs opacity-60 uppercase">{isDarkMode ? 'Dark' : 'Light'}</span>
           </button>
-          <button onClick={handleDemoSwitch} className="flex items-center justify-center px-4 py-3 w-full rounded-xl bg-charcoal text-white font-bold text-sm shadow-md hover:bg-black transition-all">
+          <button onClick={handleDemoSwitch} className="flex items-center justify-center px-4 py-3 w-full rounded-xl bg-charcoal dark:bg-gray-700 text-white font-bold text-sm shadow-md hover:bg-black dark:hover:bg-gray-600 transition-all">
             Demo: Switch to {role === 'user' ? 'Verifier' : 'User'}
           </button>
           <button onClick={handleLogout} className="flex items-center px-4 py-3 w-full rounded-xl text-accent-orange hover:bg-accent-orange/10 font-semibold transition-all">
@@ -139,7 +139,7 @@ export default function Layout({ children }) {
       {/* Main Content Area */}
       <main className="flex-1 md:ml-64 pb-24 md:pb-0 relative min-h-screen">
         {/* Soft geometric background */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-secondary rounded-full filter blur-[80px] opacity-30 translate-x-1/3 -translate-y-1/3 z-0 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-secondary rounded-full filter blur-[80px] opacity-30 translate-x-1/3 -translate-y-1/3 z-0 pointer-events-none dark:hidden"></div>
         <div className="relative z-10 p-4 pt-20 md:pt-8 md:p-8 max-w-5xl mx-auto h-full flex flex-col">
           {children}
         </div>

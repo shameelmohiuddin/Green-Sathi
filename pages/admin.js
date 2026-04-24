@@ -50,19 +50,19 @@ export default function AdminDashboard() {
       <div className="flex flex-col gap-8 w-full max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
         
         {/* Header Section */}
-        <div className="pt-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="pt-4 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors duration-300">
           <div>
-            <h1 className="text-3xl font-extrabold text-primary mb-2">Verifier Dashboard</h1>
-            <p className="text-charcoal font-medium text-lg">Review and approve user-submitted green actions.</p>
+            <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">Verifier Dashboard</h1>
+            <p className="text-charcoal dark:text-gray-300 font-medium text-lg">Review and approve user-submitted green actions.</p>
           </div>
           
-          <div className="flex bg-secondary/30 p-1 rounded-xl w-fit">
+          <div className="flex bg-secondary/30 dark:bg-gray-800 p-1 rounded-xl w-fit">
             <button
               onClick={() => setFilter('Pending')}
               className={`px-6 py-2 text-sm font-bold rounded-lg transition-all ${
                 filter === 'Pending' 
-                  ? 'bg-white text-primary shadow-sm' 
-                  : 'text-primary/70 hover:text-primary'
+                  ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-sm' 
+                  : 'text-primary/70 dark:text-gray-400 hover:text-primary dark:hover:text-white'
               }`}
             >
               Pending
@@ -71,8 +71,8 @@ export default function AdminDashboard() {
               onClick={() => setFilter('Verified')}
               className={`px-6 py-2 text-sm font-bold rounded-lg transition-all ${
                 filter === 'Verified' 
-                  ? 'bg-white text-primary shadow-sm' 
-                  : 'text-primary/70 hover:text-primary'
+                  ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-sm' 
+                  : 'text-primary/70 dark:text-gray-400 hover:text-primary dark:hover:text-white'
               }`}
             >
               Verified
@@ -82,64 +82,64 @@ export default function AdminDashboard() {
 
         {/* Highlight Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex items-center justify-between">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-between">
             <div>
-              <span className="text-gray-500 font-bold text-sm uppercase tracking-wider">Total Actions</span>
-              <div className="text-4xl font-black text-primary mt-1">{actions.length}</div>
+              <span className="text-gray-500 dark:text-gray-400 font-bold text-sm uppercase tracking-wider">Total Actions</span>
+              <div className="text-4xl font-black text-primary dark:text-white mt-1">{actions.length}</div>
             </div>
           </div>
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-yellow-100 flex items-center justify-between">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-yellow-100 dark:border-gray-700 flex items-center justify-between">
             <div>
-              <span className="text-yellow-600 font-bold text-sm uppercase tracking-wider">Pending</span>
+              <span className="text-yellow-600 dark:text-yellow-500 font-bold text-sm uppercase tracking-wider">Pending</span>
               <div className="text-4xl font-black text-yellow-500 mt-1">
                 {actions.filter(a => a.status === 'Pending').length}
               </div>
             </div>
-            <Clock className="w-10 h-10 text-yellow-200" />
+            <Clock className="w-10 h-10 text-yellow-200 dark:text-yellow-500/30" />
           </div>
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-green-100 flex items-center justify-between">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-green-100 dark:border-gray-700 flex items-center justify-between">
             <div>
-              <span className="text-green-600 font-bold text-sm uppercase tracking-wider">Verified</span>
-              <div className="text-4xl font-black text-green-500 mt-1">
+              <span className="text-green-600 dark:text-accent-lime font-bold text-sm uppercase tracking-wider">Verified</span>
+              <div className="text-4xl font-black text-green-500 dark:text-accent-lime mt-1">
                 {actions.filter(a => a.status === 'Verified').length}
               </div>
             </div>
-            <CheckCircle className="w-10 h-10 text-green-200" />
+            <CheckCircle className="w-10 h-10 text-green-200 dark:text-accent-lime/30" />
           </div>
         </div>
 
         {/* Action List */}
         <div className="flex flex-col gap-4">
           {filteredActions.length === 0 ? (
-            <div className="bg-white p-10 rounded-3xl text-center border border-dashed border-gray-200">
-              <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-400">No {filter.toLowerCase()} actions found.</h3>
+            <div className="bg-white dark:bg-gray-800 p-10 rounded-3xl text-center border border-dashed border-gray-200 dark:border-gray-700">
+              <Search className="w-12 h-12 text-gray-300 dark:text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-400 dark:text-gray-300">No {filter.toLowerCase()} actions found.</h3>
               {filter === 'Pending' && (
-                <p className="text-gray-500 mt-2">All caught up! Wait for users to submit new actions.</p>
+                <p className="text-gray-500 dark:text-gray-400 mt-2">All caught up! Wait for users to submit new actions.</p>
               )}
             </div>
           ) : (
             filteredActions.map((action) => (
-              <div key={action.id} className="bg-white p-5 md:p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:shadow-md transition-shadow">
+              <div key={action.id} className="bg-white dark:bg-gray-800 p-5 md:p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:shadow-md transition-shadow">
                 
                 <div className="flex items-center gap-4 w-full md:w-auto">
-                  <div className="w-16 h-16 bg-secondary/50 rounded-2xl flex items-center justify-center shrink-0 border border-primary/20 overflow-hidden">
+                  <div className="w-16 h-16 bg-secondary/50 dark:bg-gray-700 rounded-2xl flex items-center justify-center shrink-0 border border-primary/20 dark:border-gray-600 overflow-hidden">
                     {action.hasProof ? (
-                      <ImageIcon className="w-8 h-8 text-primary/60" />
+                      <ImageIcon className="w-8 h-8 text-primary/60 dark:text-gray-300" />
                     ) : (
-                      <span className="text-xs font-bold text-primary opacity-50">NO IMG</span>
+                      <span className="text-xs font-bold text-primary dark:text-gray-300 opacity-50">NO IMG</span>
                     )}
                   </div>
                   <div>
-                    <h3 className="font-bold text-charcoal text-lg mb-1">{action.type}</h3>
-                    <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 font-medium">
+                    <h3 className="font-bold text-charcoal dark:text-white text-lg mb-1">{action.type}</h3>
+                    <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400 font-medium">
                       <span>{new Date(action.date).toLocaleDateString()}</span>
-                      <span className="w-1 h-1 bg-gray-300 rounded-full hidden sm:block"></span>
-                      <span>Qty: <span className="font-bold text-charcoal">{action.quantity}</span></span>
+                      <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full hidden sm:block"></span>
+                      <span>Qty: <span className="font-bold text-charcoal dark:text-gray-300">{action.quantity}</span></span>
                       {action.points > 0 && (
                         <>
-                          <span className="w-1 h-1 bg-gray-300 rounded-full hidden sm:block"></span>
-                          <span className="text-green-600 font-bold">+{action.points} pts</span>
+                          <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full hidden sm:block"></span>
+                          <span className="text-green-600 dark:text-accent-lime font-bold">+{action.points} pts</span>
                         </>
                       )}
                     </div>
@@ -150,21 +150,21 @@ export default function AdminDashboard() {
                   <div className="flex items-center gap-3 w-full md:w-auto mt-4 md:mt-0">
                     <button 
                       onClick={() => handleReject(action.id)}
-                      className="flex-1 md:flex-none px-6 py-3 border border-red-200 text-red-500 font-bold rounded-xl hover:bg-red-50 active:scale-95 transition-all flex items-center justify-center gap-2"
+                      className="flex-1 md:flex-none px-6 py-3 border border-red-200 dark:border-red-900 text-red-500 dark:text-red-400 font-bold rounded-xl hover:bg-red-50 dark:hover:bg-red-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
                     >
-                      <XCircle className="w-5 h-5" />
+                      <XCircle className="w-5 h-5 dark:text-red-300" />
                       Reject
                     </button>
                     <button 
                       onClick={() => handleVerify(action.id, action.type)}
-                      className="flex-1 md:flex-none px-6 py-3 bg-primary text-white font-bold rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2"
+                      className="flex-1 md:flex-none px-6 py-3 bg-primary dark:bg-accent-lime text-white dark:text-charcoal font-bold rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2"
                     >
-                      <CheckCircle className="w-5 h-5" />
+                      <CheckCircle className="w-5 h-5 dark:text-charcoal" />
                       Verify
                     </button>
                   </div>
                 ) : (
-                  <div className={`px-4 py-2 rounded-xl font-bold text-sm ${action.status === 'Verified' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                  <div className={`px-4 py-2 rounded-xl font-bold text-sm ${action.status === 'Verified' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-accent-lime' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'}`}>
                     {action.status}
                   </div>
                 )}

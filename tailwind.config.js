@@ -12,9 +12,9 @@ module.exports = {
         secondary: "#D3E8D5",
         background: "#FAFCFB",
         charcoal: "#1A1A1A",
-        "accent-gold": "#F4A261",
-        "accent-lime": "#A7C957",
-        "accent-orange": "#E07A5F"
+        "accent-gold": "rgb(var(--accent-gold) / <alpha-value>)",
+        "accent-lime": "rgb(var(--accent-lime) / <alpha-value>)",
+        "accent-orange": "rgb(var(--accent-orange) / <alpha-value>)"
       },
       fontFamily: {
         sans: ["Manrope", "sans-serif"],

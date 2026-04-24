@@ -6,3 +6,16 @@ body {
   background-color: #FAFCFB;
   color: #1A1A1A;
 }
+
+:root {
+  --accent-gold: 244 162 97; /* #F4A261 */
+  --accent-lime: 167 201 87; /* #A7C957 */
+  --accent-orange: 224 122 95; /* #E07A5F */
+}
+
+.dark {
+  /* Desaturated colors for professional look in dark mode */
+  --accent-gold: 212 163 115; /* #D4A373 */
+  --accent-lime: 155 171 113; /* #9BAB71 */
+  --accent-orange: 196 116 95; /* #C4745F */
+}

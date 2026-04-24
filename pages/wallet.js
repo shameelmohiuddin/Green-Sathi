@@ -51,8 +51,8 @@ export default function Wallet() {
       <div className="flex flex-col gap-6 w-full max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 relative transition-colors duration-300">
         
         {/* Ambient Background Glows */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-lime/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
-        <div className="absolute bottom-10 left-10 w-72 h-72 bg-accent-gold/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-lime/10 rounded-full blur-3xl -z-10 pointer-events-none dark:hidden"></div>
+        <div className="absolute bottom-10 left-10 w-72 h-72 bg-accent-gold/10 rounded-full blur-3xl -z-10 pointer-events-none dark:hidden"></div>
         
         <div>
           <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">Eco-Wallet</h1>

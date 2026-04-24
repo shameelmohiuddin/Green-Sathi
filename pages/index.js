@@ -48,7 +48,7 @@ export default function LandingPage() {
         {/* Toast Notification */}
         {toast && (
           <div className="fixed top-10 left-1/2 -translate-x-1/2 z-[9999] bg-[#1A1A1A] text-white px-6 py-4 rounded-xl font-medium shadow-2xl animate-in slide-in-from-top-4 fade-in duration-300 w-full max-w-sm border border-gray-700 flex items-center gap-3">
-            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center shrink-0">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
@@ -58,8 +58,8 @@ export default function LandingPage() {
         )}
 
         {/* Soft geometric background patterns for an immersive feel */}
-        <div className="absolute top-0 left-0 w-64 h-64 bg-secondary rounded-full filter blur-[80px] opacity-60 -translate-x-1/2 -translate-y-1/2 z-0"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary rounded-full filter blur-[100px] opacity-10 translate-x-1/3 translate-y-1/3 z-0"></div>
+        <div className="absolute top-0 left-0 w-64 h-64 bg-secondary rounded-full filter blur-[80px] opacity-60 -translate-x-1/2 -translate-y-1/2 z-0 dark:hidden"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary rounded-full filter blur-[100px] opacity-10 translate-x-1/3 translate-y-1/3 z-0 dark:hidden"></div>
 
         <div className="w-full max-w-md flex flex-col items-center z-10">
           
@@ -91,13 +91,13 @@ export default function LandingPage() {
             <div className="flex gap-3">
               <button 
                 onClick={handleComingSoon}
-                className="flex-1 py-3 border-2 border-primary/20 text-primary bg-secondary/30 font-semibold rounded-xl hover:bg-secondary/50 transition-all flex justify-center items-center"
+                className="flex-1 py-3 border-2 border-primary/20 text-primary dark:text-gray-300 bg-secondary/30 dark:bg-gray-800 dark:border-gray-700 font-semibold rounded-xl hover:bg-secondary/50 dark:hover:bg-gray-700 transition-all flex justify-center items-center"
               >
                 ಕನ್ನಡ
               </button>
               <button 
                 onClick={handleComingSoon}
-                className="flex-1 py-3 border-2 border-primary/20 text-primary bg-secondary/30 font-semibold rounded-xl hover:bg-secondary/50 transition-all flex justify-center items-center"
+                className="flex-1 py-3 border-2 border-primary/20 text-primary dark:text-gray-300 bg-secondary/30 dark:bg-gray-800 dark:border-gray-700 font-semibold rounded-xl hover:bg-secondary/50 dark:hover:bg-gray-700 transition-all flex justify-center items-center"
               >
                 हिंदी
               </button>

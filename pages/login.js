@@ -32,9 +32,11 @@ export default function Login() {
     }
 
     const randomOtp = validOtps[Math.floor(Math.random() * validOtps.length)];
-    setToast(`Messages: Your Green Sathi OTP is ${randomOtp}`);
-    setTimeout(() => setToast(''), 5000);
     setStep('otp');
+    setTimeout(() => {
+      setToast(`Messages: Your Green Sathi OTP is ${randomOtp}`);
+      setTimeout(() => setToast(''), 2500);
+    }, 3000);
   };
 
   const handleVerifyOtp = (e) => {
@@ -76,32 +78,32 @@ export default function Login() {
 
       <div className="min-h-screen flex flex-col p-6 bg-background dark:bg-charcoal relative overflow-hidden font-sans transition-colors duration-300">
         {/* Soft Background Patterns */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-secondary rounded-full filter blur-[80px] opacity-60 translate-x-1/2 -translate-y-1/2 z-0"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary rounded-full filter blur-[100px] opacity-10 -translate-x-1/3 translate-y-1/3 z-0"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-secondary rounded-full filter blur-[80px] opacity-60 translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none dark:hidden"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary rounded-full filter blur-[100px] opacity-10 -translate-x-1/3 translate-y-1/3 z-0 pointer-events-none dark:hidden"></div>
 
         <div className="relative z-10 w-full max-w-md md:max-w-2xl lg:max-w-4xl mx-auto flex flex-col h-full flex-grow pt-8">
           
           <button 
             onClick={() => router.push('/')}
-            className="flex items-center text-primary font-semibold mb-8 hover:underline w-fit"
+            className="flex items-center text-primary dark:text-gray-300 font-semibold mb-8 hover:underline w-fit"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Back
           </button>
 
           <div className="mb-10">
-            <h1 className="text-3xl font-extrabold text-primary mb-2">Welcome Back</h1>
-            <p className="text-charcoal font-medium">Log in to continue your green journey.</p>
+            <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">Welcome Back</h1>
+            <p className="text-charcoal dark:text-gray-300 font-medium">Log in to continue your green journey.</p>
           </div>
 
           {/* Role Selection */}
-          <div className="flex bg-secondary/30 p-1 rounded-xl mb-8">
+          <div className="flex bg-secondary/30 dark:bg-gray-800 p-1 rounded-xl mb-8">
             <button
               onClick={() => setRole('user')}
               className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all ${
                 role === 'user' 
-                  ? 'bg-white text-primary shadow-md' 
-                  : 'text-primary/70 hover:text-primary'
+                  ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-md' 
+                  : 'text-primary/70 dark:text-gray-400 hover:text-primary dark:hover:text-white'
               }`}
             >
               Green Sathi User
@@ -110,8 +112,8 @@ export default function Login() {
               onClick={() => setRole('verifier')}
               className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all ${
                 role === 'verifier' 
-                  ? 'bg-white text-primary shadow-md' 
-                  : 'text-primary/70 hover:text-primary'
+                  ? 'bg-white dark:bg-gray-700 text-primary dark:text-white shadow-md' 
+                  : 'text-primary/70 dark:text-gray-400 hover:text-primary dark:hover:text-white'
               }`}
             >
               Verifier (Admin)
@@ -123,9 +125,9 @@ export default function Login() {
             {step === 'phone' ? (
               <form onSubmit={handleSendOtp} className="flex flex-col gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-primary mb-2">Phone Number</label>
+                  <label className="block text-sm font-bold text-primary dark:text-gray-300 mb-2">Phone Number</label>
                   <div className="flex">
-                    <span className="inline-flex items-center px-4 rounded-l-2xl border border-r-0 border-gray-200 bg-gray-50 text-gray-500 font-semibold">
+                    <span className="inline-flex items-center px-4 rounded-l-2xl border border-r-0 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400 font-semibold">
                       +91
                     </span>
                     <input 
@@ -133,7 +135,7 @@ export default function Login() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
                       placeholder="Enter your 10-digit number"
-                      className="flex-1 min-w-0 block w-full px-4 py-4 rounded-none rounded-r-2xl text-charcoal border border-gray-200 focus:ring-primary focus:border-primary outline-none"
+                      className="flex-1 min-w-0 block w-full px-4 py-4 rounded-none rounded-r-2xl text-charcoal dark:text-white bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-primary focus:border-primary outline-none"
                     />
                   </div>
                 </div>
@@ -148,14 +150,14 @@ export default function Login() {
             ) : (
               <form onSubmit={handleVerifyOtp} className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div>
-                  <label className="block text-sm font-bold text-primary mb-2">Enter OTP</label>
-                  <p className="text-sm text-gray-500 mb-4">Code sent to +91 {phone} <button type="button" onClick={() => setStep('phone')} className="text-primary font-semibold hover:underline">Edit</button></p>
+                  <label className="block text-sm font-bold text-primary dark:text-gray-300 mb-2">Enter OTP</label>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Code sent to +91 {phone} <button type="button" onClick={() => setStep('phone')} className="text-primary dark:text-accent-lime font-semibold hover:underline">Edit</button></p>
                   <input 
                     type="text"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 4))}
                     placeholder="1234"
-                    className="block w-full px-4 py-4 text-center tracking-[1em] text-2xl font-bold rounded-2xl text-charcoal border border-gray-200 focus:ring-primary focus:border-primary outline-none"
+                    className="block w-full px-4 py-4 text-center tracking-[1em] text-2xl font-bold rounded-2xl text-charcoal dark:text-white bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-primary focus:border-primary outline-none"
                   />
                 </div>
                 {error && <p className="text-red-500 font-semibold text-sm animate-in fade-in">{error}</p>}
@@ -170,11 +172,11 @@ export default function Login() {
           </div>
           
           <div className="mt-8 text-center pb-8">
-            <p className="text-charcoal font-medium">
+            <p className="text-charcoal dark:text-gray-300 font-medium">
               Don't have an account?{' '}
               <button 
                 onClick={() => router.push('/register')}
-                className="text-primary font-bold hover:underline"
+                className="text-primary dark:text-white font-bold hover:underline"
               >
                 Register here
               </button>

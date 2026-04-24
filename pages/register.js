@@ -64,14 +64,14 @@ export default function Register() {
       </Head>
       <div className="min-h-screen flex flex-col p-6 bg-background dark:bg-charcoal relative overflow-hidden font-sans transition-colors duration-300">
         {/* Soft Background Patterns */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-secondary rounded-full filter blur-[80px] opacity-60 translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary rounded-full filter blur-[100px] opacity-10 -translate-x-1/3 translate-y-1/3 z-0 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-secondary rounded-full filter blur-[80px] opacity-60 translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none dark:hidden"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary rounded-full filter blur-[100px] opacity-10 -translate-x-1/3 translate-y-1/3 z-0 pointer-events-none dark:hidden"></div>
 
         <div className="relative z-10 w-full max-w-md md:max-w-2xl lg:max-w-4xl mx-auto flex flex-col h-full flex-grow pt-4 pb-12">
           
           <button 
             onClick={() => router.push('/login')}
-            className="flex items-center text-primary font-semibold mb-6 hover:underline w-fit"
+            className="flex items-center text-primary dark:text-gray-300 font-semibold mb-6 hover:underline w-fit"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Back to Login
@@ -159,7 +159,7 @@ export default function Register() {
                 
                 <button 
                   type="submit"
-                  className="w-full md:w-auto md:ml-auto mt-6 px-10 py-4 bg-primary text-white font-bold rounded-2xl shadow-lg hover:shadow-xl active:scale-95 transition-all text-lg"
+                  className="w-full md:max-w-xs mx-auto mt-6 px-10 py-4 bg-primary text-white font-bold rounded-2xl shadow-lg hover:shadow-xl active:scale-95 transition-all text-lg"
                 >
                   Continue
                 </button>

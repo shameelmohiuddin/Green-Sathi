@@ -10,21 +10,24 @@ export default function Training() {
       type: "Video",
       duration: "5",
       icon: PlayCircle,
-      color: "bg-accent-lime/20 text-primary"
+      color: "bg-accent-lime/20 text-primary dark:text-accent-lime",
+      url: "https://www.youtube.com/watch?v=7SCBdcXg2fs"
     },
     {
       title: "Benefits of Composting at Home",
       type: "Article",
       duration: "3 min read",
       icon: FileText,
-      color: "bg-accent-lime/20 text-primary"
+      color: "bg-accent-lime/20 text-primary dark:text-accent-lime",
+      url: "https://www.youtube.com/watch?v=xhu7Gu2G3nE"
     },
     {
       title: "Using Solar Pumps for Agriculture",
       type: "Video",
       duration: "10",
       icon: PlayCircle,
-      color: "bg-accent-lime/20 text-primary"
+      color: "bg-accent-lime/20 text-primary dark:text-accent-lime",
+      url: "https://www.youtube.com/watch?v=kNRTEKzaxrs"
     }
   ];
 
@@ -39,7 +42,7 @@ export default function Training() {
         {/* Toast Notification */}
         {toast && (
           <div className="fixed top-10 left-1/2 -translate-x-1/2 z-[9999] bg-[#1A1A1A] text-white px-6 py-4 rounded-xl font-medium shadow-2xl animate-in slide-in-from-top-4 fade-in duration-300 w-full max-w-sm border border-gray-700 flex items-center gap-3">
-            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 bg-accent-orange rounded-full flex items-center justify-center shrink-0">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
@@ -57,7 +60,7 @@ export default function Training() {
           {resources.map((resource, idx) => (
             <div 
               key={idx} 
-              onClick={() => { setToast("Content coming soon!"); setTimeout(() => setToast(''), 3000); }}
+              onClick={() => { window.open(resource.url, '_blank', 'noopener,noreferrer'); }}
               className="bg-white dark:bg-gray-800 p-5 rounded-3xl border border-gray-100 dark:border-gray-700 border-t-4 border-t-accent-lime shadow-sm hover:shadow-md transition-shadow cursor-pointer group flex flex-col justify-between"
             >
               <div className="flex items-start justify-between mb-4">
