@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Gift, ArrowDownLeft, Clock, CheckCircle } from 'lucide-react';
 
 export default function Wallet() {
@@ -11,8 +12,14 @@ export default function Wallet() {
     // Load local storage actions
     const localActions = JSON.parse(localStorage.getItem('greenSathiActions') || '[]');
     
-    // Add some mock past transactions if none exist
+    // Calculate total balance from verified actions
+    const totalVerifiedPoints = localActions
+      .filter(action => action.status === 'Verified')
+      .reduce((sum, action) => sum + (action.points || 0), 0);
+      
+    // Add mock points for initial demo experience (if no local actions)
     if (localActions.length === 0) {
+      setBalance(240); // 100 + 140 from mock
       const mock = [
         { id: 1, type: "Tree Planting", status: "Verified", points: 100, date: "2026-04-20" },
         { id: 2, type: "Composting", status: "Verified", points: 140, date: "2026-04-18" },
@@ -20,19 +27,19 @@ export default function Wallet() {
       setTransactions(mock);
     } else {
       // Merge mock with local
-      const mock = [
+      const mockTransactions = [
         { id: 1, type: "Tree Planting", status: "Verified", points: 100, date: "2026-04-20" },
         { id: 2, type: "Composting", status: "Verified", points: 140, date: "2026-04-18" },
       ];
-      setTransactions([...localActions, ...mock]);
+      setTransactions([...localActions, ...mockTransactions]);
+      setBalance(totalVerifiedPoints + 240); // Add mock balance to dynamic balance
     }
   }, []);
 
+  const router = useRouter();
+
   const handleRedeem = () => {
-    if (balance > 0) {
-      setRedeemed(true);
-      setTimeout(() => setRedeemed(false), 3000);
-    }
+    router.push('/rewards');
   };
 
   return (

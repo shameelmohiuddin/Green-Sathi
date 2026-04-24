@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
-import { CheckCircle, XCircle, Search, Clock, ArrowRight } from 'lucide-react';
+import { CheckCircle, XCircle, Search, Clock, ArrowRight, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminDashboard() {
@@ -123,19 +123,22 @@ export default function AdminDashboard() {
               <div key={action.id} className="bg-white p-5 md:p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:shadow-md transition-shadow">
                 
                 <div className="flex items-center gap-4 w-full md:w-auto">
-                  <div className="w-16 h-16 bg-secondary/30 rounded-2xl flex items-center justify-center shrink-0 border border-primary/10">
-                    {/* Mock Photo Thumbnail */}
-                    <span className="text-xs font-bold text-primary opacity-50">PHOTO</span>
+                  <div className="w-16 h-16 bg-secondary/50 rounded-2xl flex items-center justify-center shrink-0 border border-primary/20 overflow-hidden">
+                    {action.hasProof ? (
+                      <ImageIcon className="w-8 h-8 text-primary/60" />
+                    ) : (
+                      <span className="text-xs font-bold text-primary opacity-50">NO IMG</span>
+                    )}
                   </div>
                   <div>
                     <h3 className="font-bold text-charcoal text-lg mb-1">{action.type}</h3>
-                    <div className="flex items-center gap-2 text-sm text-gray-500 font-medium">
+                    <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 font-medium">
                       <span>{new Date(action.date).toLocaleDateString()}</span>
-                      <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                      <span className="w-1 h-1 bg-gray-300 rounded-full hidden sm:block"></span>
                       <span>Qty: <span className="font-bold text-charcoal">{action.quantity}</span></span>
                       {action.points > 0 && (
                         <>
-                          <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                          <span className="w-1 h-1 bg-gray-300 rounded-full hidden sm:block"></span>
                           <span className="text-green-600 font-bold">+{action.points} pts</span>
                         </>
                       )}

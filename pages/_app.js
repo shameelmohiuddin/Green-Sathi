@@ -4,7 +4,7 @@ import Layout from '../components/Layout'
 
 export default function App({ Component, pageProps }) {
   const router = useRouter()
-  const isNoLayoutPage = router.pathname === '/' || router.pathname === '/login'
+  const isNoLayoutPage = router.pathname === '/' || router.pathname === '/login' || router.pathname === '/register'
 
   if (isNoLayoutPage) {
     return <Component {...pageProps} />

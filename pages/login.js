@@ -27,7 +27,28 @@ export default function Login() {
     e.preventDefault();
     setError('');
     if (validOtps.includes(otp)) {
-      // Mock login success
+      // 3 Sample User Presets check
+      const presets = {
+        "9999900001": {
+          fullName: "Pooja Reddy", mobileNumber: "9999900001", village: "Anantapur", districtPin: "Anantapur, 515001", idType: "Aadhaar", idNumber: "xxxx-xxxx-1234"
+        },
+        "9999900002": {
+          fullName: "Sunita Devi", mobileNumber: "9999900002", village: "Bishnupur", districtPin: "Bankura, 722122", idType: "Voter ID", idNumber: "ABC1234567"
+        },
+        "9999900003": {
+          fullName: "Lakshmi Bai", mobileNumber: "9999900003", village: "Chanderi", districtPin: "Ashoknagar, 473446", idType: "Ration Card", idNumber: "RC-0987654321"
+        }
+      };
+
+      if (presets[phone]) {
+        localStorage.setItem('greenSathiUserProfile', JSON.stringify(presets[phone]));
+      } else if (!localStorage.getItem('greenSathiUserProfile')) {
+        // Fallback if they didn't register and used a random phone
+        localStorage.setItem('greenSathiUserProfile', JSON.stringify({
+          fullName: "Changemaker", mobileNumber: phone, village: "Unknown", districtPin: "Unknown", idType: "Aadhaar", idNumber: "0000"
+        }));
+      }
+
       localStorage.setItem('greenSathiRole', role);
       router.push(role === 'user' ? '/dashboard' : '/admin');
     } else {

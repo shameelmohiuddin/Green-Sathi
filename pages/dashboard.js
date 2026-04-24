@@ -5,6 +5,16 @@ import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
   const [userName, setUserName] = useState('Changemaker');
+  const [toast, setToast] = useState('');
+
+  useEffect(() => {
+    const profile = JSON.parse(localStorage.getItem('greenSathiUserProfile'));
+    if (profile && profile.fullName) {
+      // Get first name
+      const firstName = profile.fullName.split(' ')[0];
+      setUserName(firstName);
+    }
+  }, []);
 
   const cards = [
     {
@@ -27,9 +37,10 @@ export default function Dashboard() {
       title: "Community Updates",
       description: "See what others are doing",
       icon: Users,
-      href: "/community",
+      href: "#",
       color: "bg-white border border-gray-100 text-charcoal",
-      iconBg: "bg-secondary/50 text-primary"
+      iconBg: "bg-secondary/50 text-primary",
+      comingSoon: true
     },
     {
       title: "Training & Resources",
@@ -47,8 +58,15 @@ export default function Dashboard() {
         <title>Dashboard | Green Sathi</title>
       </Head>
 
-      <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500 relative">
         
+        {/* Toast Notification */}
+        {toast && (
+          <div className="fixed top-10 left-1/2 -translate-x-1/2 z-50 bg-charcoal text-white px-6 py-3 rounded-full font-bold shadow-xl animate-in slide-in-from-top-4 fade-in duration-300">
+            {toast}
+          </div>
+        )}
+
         {/* Header Section */}
         <div className="pt-4">
           <h1 className="text-3xl font-extrabold text-primary mb-2">Hello, {userName}! 👋</h1>
@@ -70,8 +88,8 @@ export default function Dashboard() {
 
         {/* Navigation Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {cards.map((card, index) => (
-            <Link key={index} href={card.href}>
+          {cards.map((card, index) => {
+            const CardContent = (
               <div className={`p-6 rounded-3xl shadow-sm hover:shadow-md transition-all group flex items-center justify-between cursor-pointer ${card.color}`}>
                 <div className="flex items-center gap-4">
                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${card.iconBg}`}>
@@ -84,8 +102,22 @@ export default function Dashboard() {
                 </div>
                 <ChevronRight className="w-5 h-5 opacity-50 group-hover:translate-x-1 transition-transform" />
               </div>
-            </Link>
-          ))}
+            );
+
+            if (card.comingSoon) {
+              return (
+                <div key={index} onClick={() => { setToast("Community feature coming soon!"); setTimeout(() => setToast(''), 3000); }}>
+                  {CardContent}
+                </div>
+              );
+            }
+
+            return (
+              <Link key={index} href={card.href}>
+                {CardContent}
+              </Link>
+            );
+          })}
         </div>
 
       </div>

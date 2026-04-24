@@ -52,24 +52,40 @@ export default function LandingPage() {
             </span>
           </div>
 
-          <div className="flex flex-col gap-4 w-full">
+          <div className="flex flex-col gap-3 w-full mb-6">
+            <button 
+              className="w-full py-3 bg-primary text-white font-bold rounded-xl shadow-md text-lg flex justify-center items-center gap-2"
+            >
+              English (Active)
+            </button>
+            <div className="flex gap-3">
+              <button 
+                onClick={handleComingSoon}
+                className="flex-1 py-3 border-2 border-primary/20 text-primary bg-secondary/30 font-semibold rounded-xl hover:bg-secondary/50 transition-all flex justify-center items-center"
+              >
+                ಕನ್ನಡ
+              </button>
+              <button 
+                onClick={handleComingSoon}
+                className="flex-1 py-3 border-2 border-primary/20 text-primary bg-secondary/30 font-semibold rounded-xl hover:bg-secondary/50 transition-all flex justify-center items-center"
+              >
+                हिंदी
+              </button>
+            </div>
+          </div>
+
+          <div className="w-full border-t border-gray-200 pt-6 flex flex-col gap-4">
             <button 
               onClick={() => router.push('/login')}
               className="w-full py-4 bg-primary text-white font-bold rounded-2xl shadow-lg hover:shadow-xl active:scale-95 transition-all text-lg flex justify-center items-center gap-2"
             >
-              English
+              Continue to Login
             </button>
             <button 
-              onClick={handleComingSoon}
-              className="w-full py-4 border-2 border-primary/20 text-primary bg-secondary/30 font-semibold rounded-2xl hover:bg-secondary/50 active:scale-95 transition-all flex justify-center items-center gap-2"
+              onClick={() => router.push('/register')}
+              className="w-full py-4 border-2 border-primary text-primary bg-white font-bold rounded-2xl shadow-sm hover:bg-gray-50 active:scale-95 transition-all text-lg flex justify-center items-center gap-2"
             >
-              ಕನ್ನಡ (Kannada)
-            </button>
-            <button 
-              onClick={handleComingSoon}
-              className="w-full py-4 border-2 border-primary/20 text-primary bg-secondary/30 font-semibold rounded-2xl hover:bg-secondary/50 active:scale-95 transition-all flex justify-center items-center gap-2"
-            >
-              हिंदी (Hindi)
+              Register as New User
             </button>
           </div>
 
