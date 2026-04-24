@@ -1,0 +1,121 @@
+import Head from 'next/head';
+import { useState, useEffect } from 'react';
+import { Gift, ArrowDownLeft, Clock, CheckCircle } from 'lucide-react';
+
+export default function Wallet() {
+  const [balance, setBalance] = useState(240);
+  const [transactions, setTransactions] = useState([]);
+  const [redeemed, setRedeemed] = useState(false);
+
+  useEffect(() => {
+    // Load local storage actions
+    const localActions = JSON.parse(localStorage.getItem('greenSathiActions') || '[]');
+    
+    // Add some mock past transactions if none exist
+    if (localActions.length === 0) {
+      const mock = [
+        { id: 1, type: "Tree Planting", status: "Verified", points: 100, date: "2026-04-20" },
+        { id: 2, type: "Composting", status: "Verified", points: 140, date: "2026-04-18" },
+      ];
+      setTransactions(mock);
+    } else {
+      // Merge mock with local
+      const mock = [
+        { id: 1, type: "Tree Planting", status: "Verified", points: 100, date: "2026-04-20" },
+        { id: 2, type: "Composting", status: "Verified", points: 140, date: "2026-04-18" },
+      ];
+      setTransactions([...localActions, ...mock]);
+    }
+  }, []);
+
+  const handleRedeem = () => {
+    if (balance > 0) {
+      setRedeemed(true);
+      setTimeout(() => setRedeemed(false), 3000);
+    }
+  };
+
+  return (
+    <>
+      <Head>
+        <title>Wallet | Green Sathi</title>
+      </Head>
+
+      <div className="flex flex-col gap-6 w-full max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+        
+        <div>
+          <h1 className="text-3xl font-extrabold text-primary mb-2">Eco-Wallet</h1>
+          <p className="text-charcoal font-medium">Manage your green credits and rewards.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-2">
+          {/* Balance Card */}
+          <div className="bg-primary text-white rounded-[32px] p-8 shadow-xl relative overflow-hidden flex flex-col items-center justify-center text-center">
+            <div className="absolute top-0 left-0 w-40 h-40 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 z-0"></div>
+            <div className="absolute bottom-0 right-0 w-32 h-32 bg-secondary/20 rounded-full translate-x-1/3 translate-y-1/3 z-0"></div>
+            
+            <span className="relative z-10 text-white/80 font-bold tracking-widest uppercase text-sm mb-2">Total Balance</span>
+            <div className="relative z-10 text-6xl md:text-7xl lg:text-8xl font-black mb-1">{balance}</div>
+            <span className="relative z-10 text-white/90 font-medium mb-8">Eco-Points</span>
+
+            <button 
+              onClick={handleRedeem}
+              className={`relative z-10 w-full max-w-xs py-4 rounded-2xl font-bold text-lg transition-all flex items-center justify-center gap-2 ${
+                redeemed 
+                  ? 'bg-green-500 text-white shadow-lg shadow-green-500/30' 
+                  : 'bg-white text-primary shadow-lg hover:shadow-xl active:scale-95'
+              }`}
+            >
+              {redeemed ? (
+                <>
+                  <CheckCircle className="w-6 h-6" />
+                  Redeemed Successfully!
+                </>
+              ) : (
+                <>
+                  <Gift className="w-6 h-6" />
+                  Redeem Rewards
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Transaction History */}
+          <div className="flex flex-col">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-charcoal">Transaction History</h2>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              {transactions.map((tx) => (
+                <div key={tx.id} className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                      tx.status === 'Verified' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
+                    }`}>
+                      {tx.status === 'Verified' ? <ArrowDownLeft className="w-6 h-6" /> : <Clock className="w-6 h-6" />}
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-charcoal text-base">{tx.type}</h3>
+                      <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                        <span>{new Date(tx.date).toLocaleDateString()}</span>
+                        <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                        <span className={`font-semibold ${tx.status === 'Verified' ? 'text-green-600' : 'text-yellow-600'}`}>
+                          {tx.status}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`font-black text-lg ${tx.status === 'Verified' ? 'text-green-600' : 'text-gray-400'}`}>
+                    +{tx.points}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </>
+  );
+}
