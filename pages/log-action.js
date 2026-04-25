@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Camera, CheckCircle2 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function LogAction() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function LogAction() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [impactInfo, setImpactInfo] = useState(null);
+  const { t } = useLanguage();
 
   const actionTypes = [
     "Tree Planting",
@@ -76,19 +78,19 @@ export default function LogAction() {
     return (
       <div className="h-[60vh] flex flex-col items-center justify-center text-center animate-in zoom-in duration-500 p-4 transition-colors duration-300">
         <CheckCircle2 className="w-24 h-24 text-green-500 mb-6" />
-        <h2 className="text-3xl font-extrabold text-primary dark:text-white mb-4">Action Logged!</h2>
+        <h2 className="text-3xl font-extrabold text-primary dark:text-white mb-4">{t('actionLogged')}</h2>
         <div className="bg-secondary/30 dark:bg-gray-800 p-6 rounded-3xl w-full max-w-sm border border-primary/10 dark:border-gray-700 mb-6">
-          <p className="text-charcoal dark:text-gray-300 font-bold text-lg mb-2">Amazing!</p>
+          <p className="text-charcoal dark:text-gray-300 font-bold text-lg mb-2">{t('amazing')}</p>
           <p className="text-charcoal dark:text-gray-300 font-medium">
-            You earned <span className="text-primary dark:text-accent-lime font-black text-xl">{impactInfo.points}</span> Eco-Points and helped reduce <span className="text-green-600 font-black text-xl">{impactInfo.co2.toFixed(1)}kg</span> of Carbon Emissions!
+            {t('youEarned')}<span className="text-primary dark:text-accent-lime font-black text-xl">{impactInfo.points}</span> {t('ecoPoints')}{t('helpedReduce')}<span className="text-green-600 font-black text-xl">{impactInfo.co2.toFixed(1)}kg</span>{t('co2')}
           </p>
         </div>
-        <p className="text-gray-500 font-medium text-sm mb-8">Your submission is pending verification.</p>
+        <p className="text-gray-500 font-medium text-sm mb-8">{t('pendingVerification')}</p>
         <button 
           onClick={() => router.push('/dashboard')}
           className="px-10 py-4 bg-primary text-white font-bold rounded-2xl shadow-lg hover:shadow-xl active:scale-95 transition-all text-lg"
         >
-          OK
+          {t('ok')}
         </button>
       </div>
     );
@@ -103,14 +105,14 @@ export default function LogAction() {
       <div className="flex flex-col gap-6 w-full max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 transition-colors duration-300">
         
         <div>
-          <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">Log Eco-Action</h1>
-          <p className="text-charcoal dark:text-gray-300 font-medium">Submit your green activities to earn credits.</p>
+          <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">{t('logEcoAction')}</h1>
+          <p className="text-charcoal dark:text-gray-300 font-medium">{t('submitGreen')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-4">
           
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-bold text-primary dark:text-gray-300">Action Type</label>
+            <label className="text-sm font-bold text-primary dark:text-gray-300">{t('actionType')}</label>
             <div className="relative">
               <select 
                 value={actionType}
@@ -118,7 +120,7 @@ export default function LogAction() {
                 className="w-full px-4 py-4 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:border-primary outline-none appearance-none font-medium text-charcoal dark:text-white shadow-sm transition-colors"
               >
                 {actionTypes.map(type => (
-                  <option key={type} value={type}>{type}</option>
+                  <option key={type} value={type}>{t(type) || type}</option>
                 ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-400">
@@ -128,7 +130,7 @@ export default function LogAction() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-bold text-primary dark:text-gray-300">Quantity / Metric (e.g., number of trees)</label>
+            <label className="text-sm font-bold text-primary dark:text-gray-300">{t('quantity')}</label>
             <input 
               type="number" 
               value={quantity}
@@ -139,7 +141,7 @@ export default function LogAction() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-bold text-primary dark:text-gray-300">Date</label>
+            <label className="text-sm font-bold text-primary dark:text-gray-300">{t('date')}</label>
             <input 
               type="date" 
               value={date}
@@ -150,7 +152,7 @@ export default function LogAction() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-bold text-primary dark:text-gray-300">Upload Photo Proof</label>
+              <label className="text-sm font-bold text-primary dark:text-gray-300">{t('photoProof')}</label>
               <div className="relative w-full h-full min-h-[160px] border-2 border-dashed rounded-3xl flex flex-col items-center justify-center gap-3 overflow-hidden transition-all border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:border-primary/50 dark:hover:border-primary/50 hover:text-primary dark:hover:text-primary cursor-pointer">
                 <input 
                   type="file" 
@@ -164,13 +166,13 @@ export default function LogAction() {
                     <img src={photoUrl} alt="Preview" className="w-full h-full object-cover opacity-60" />
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 text-white p-4">
                       <CheckCircle2 className="w-10 h-10 mb-2 shadow-sm" />
-                      <span className="font-bold text-center text-sm shadow-sm">Photo Selected</span>
+                      <span className="font-bold text-center text-sm shadow-sm">{t('photoSelected')}</span>
                     </div>
                   </div>
                 ) : (
                   <>
                     <Camera className="w-10 h-10" />
-                    <span className="font-bold text-center">Tap to upload photo</span>
+                    <span className="font-bold text-center">{t('tapUpload')}</span>
                     <span className="text-sm text-center px-4">JPG, PNG up to 5MB</span>
                   </>
                 )}
@@ -183,7 +185,7 @@ export default function LogAction() {
                 type="submit"
                 className="w-full py-4 bg-primary text-white font-bold rounded-2xl shadow-md hover:bg-[#2A5A46] hover:shadow-lg active:scale-95 transition-all text-lg"
               >
-                Submit Action
+                {t('submitAction')}
               </button>
             </div>
           </div>

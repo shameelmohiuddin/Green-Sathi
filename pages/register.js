@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { ArrowLeft, UserPlus } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Register() {
   const router = useRouter();
@@ -17,6 +18,7 @@ export default function Register() {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [toast, setToast] = useState('');
+  const { t } = useLanguage();
 
   const validOtps = ['8492', '3715', '9021', '1478', '6523', '7890', '4321', '5647', '2198', '8834'];
 
@@ -93,15 +95,15 @@ export default function Register() {
             className="flex items-center text-primary dark:text-gray-300 font-semibold mb-6 hover:underline w-fit"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
-            Back to Login
+            {t('backToLogin')}
           </button>
 
           <div className="mb-8">
             <div className="w-14 h-14 bg-primary/10 dark:bg-gray-800 rounded-2xl flex items-center justify-center text-primary dark:text-white mb-4">
               <UserPlus className="w-8 h-8" />
             </div>
-            <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">New Registration</h1>
-            <p className="text-charcoal dark:text-gray-300 font-medium">Join the Green Sathi community and start your journey.</p>
+            <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">{t('newReg')}</h1>
+            <p className="text-charcoal dark:text-gray-300 font-medium">{t('joinCommunity')}</p>
           </div>
 
           <div className="flex-grow flex flex-col bg-white dark:bg-gray-800 p-6 md:p-8 rounded-3xl shadow-xl border border-gray-50 dark:border-gray-700 transition-colors duration-300">
@@ -110,16 +112,16 @@ export default function Register() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="flex flex-col gap-2">
-                    <label className="text-sm font-bold text-primary dark:text-gray-300">Full Name</label>
+                    <label className="text-sm font-bold text-primary dark:text-gray-300">{t('fullName')}</label>
                     <input 
                       type="text" name="fullName" value={formData.fullName} onChange={handleInputChange}
-                      placeholder="e.g. Anjali Sharma"
+                      placeholder={t('namePlaceholder')}
                       className="w-full px-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:bg-white dark:focus:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-medium text-charcoal dark:text-white transition-all"
                     />
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label className="text-sm font-bold text-primary dark:text-gray-300">Mobile Number</label>
+                    <label className="text-sm font-bold text-primary dark:text-gray-300">{t('phoneNumber')}</label>
                     <div className="flex">
                       <span className="inline-flex items-center px-4 rounded-l-2xl border border-r-0 border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 text-gray-500 dark:text-gray-400 font-semibold">
                         +91
@@ -135,25 +137,25 @@ export default function Register() {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label className="text-sm font-bold text-primary dark:text-gray-300">Village / Gram Panchayat</label>
+                    <label className="text-sm font-bold text-primary dark:text-gray-300">{t('village')}</label>
                     <input 
                       type="text" name="village" value={formData.village} onChange={handleInputChange}
-                      placeholder="e.g. Rampur"
+                      placeholder={t('villagePlaceholder')}
                       className="w-full px-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:bg-white dark:focus:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-medium text-charcoal dark:text-white transition-all"
                     />
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label className="text-sm font-bold text-primary dark:text-gray-300">District & PIN Code</label>
+                    <label className="text-sm font-bold text-primary dark:text-gray-300">{t('district')}</label>
                     <input 
                       type="text" name="districtPin" value={formData.districtPin} onChange={handleInputChange}
-                      placeholder="e.g. Pune, 411001"
+                      placeholder={t('districtPlaceholder')}
                       className="w-full px-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:bg-white dark:focus:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-primary outline-none font-medium text-charcoal dark:text-white transition-all"
                     />
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label className="text-sm font-bold text-primary dark:text-gray-300">Verification ID Type</label>
+                    <label className="text-sm font-bold text-primary dark:text-gray-300">{t('idType')}</label>
                     <select 
                       name="idType" value={formData.idType} onChange={handleInputChange}
                       className="w-full px-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:bg-white dark:focus:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-primary outline-none appearance-none font-medium text-charcoal dark:text-white transition-all"
@@ -165,7 +167,7 @@ export default function Register() {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label className="text-sm font-bold text-primary dark:text-gray-300">ID Number</label>
+                    <label className="text-sm font-bold text-primary dark:text-gray-300">{t('idNumber')}</label>
                     <input 
                       type="text" name="idNumber" value={formData.idNumber} onChange={handleInputChange}
                       placeholder="Enter ID number"
@@ -180,14 +182,14 @@ export default function Register() {
                   type="submit"
                   className="w-full md:max-w-xs mx-auto mt-6 px-10 py-4 bg-primary text-white font-bold rounded-2xl shadow-lg hover:shadow-xl active:scale-95 transition-all text-lg"
                 >
-                  Continue
+                  {t('continue')}
                 </button>
               </form>
             ) : (
               <form onSubmit={handleVerifyOtp} className="flex flex-col gap-6 max-w-sm mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-500 py-8">
                 <div className="text-center">
-                  <label className="block text-xl font-extrabold text-primary dark:text-white mb-2">Verify Mobile</label>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Code sent to +91 {formData.mobileNumber} <br/><button type="button" onClick={() => setStep('details')} className="text-primary font-semibold hover:underline mt-1">Edit Number</button></p>
+                  <label className="block text-xl font-extrabold text-primary dark:text-white mb-2">{t('verifyMobile')}</label>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t('codeSent')}{formData.mobileNumber} <br/><button type="button" onClick={() => setStep('details')} className="text-primary font-semibold hover:underline mt-1">{t('edit')}</button></p>
                   <input 
                     type="text"
                     value={otp}

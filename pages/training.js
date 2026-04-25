@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import { PlayCircle, FileText, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Training() {
   const [toast, setToast] = useState('');
+  const { t } = useLanguage();
   const resources = [
     {
       title: "How to Segregate Waste properly",
@@ -52,7 +54,7 @@ export default function Training() {
         )}
 
         <div>
-          <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">Training & Resources</h1>
+          <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">{t('trainingResources')}</h1>
           <p className="text-charcoal dark:text-gray-300 font-medium">Learn more about sustainability and improve your green impact.</p>
         </div>
 
@@ -85,13 +87,13 @@ export default function Training() {
 
         {/* Community Banner */}
         <div className="mt-4 bg-secondary/30 dark:bg-gray-800 rounded-3xl p-6 text-center border-2 border-primary/10 dark:border-gray-700 border-dashed">
-          <h3 className="text-lg font-bold text-primary dark:text-white mb-2">Need help?</h3>
-          <p className="text-charcoal dark:text-gray-300 font-medium text-sm mb-4">Join our community workshops held every weekend.</p>
+          <h3 className="text-lg font-bold text-primary dark:text-white mb-2">{t('needHelp')}</h3>
+          <p className="text-charcoal dark:text-gray-300 font-medium text-sm mb-4">{t('contactSupport')}</p>
           <button 
             onClick={() => { setToast("Workshop schedule coming soon!"); setTimeout(() => setToast(''), 3000); }}
             className="px-6 py-3 bg-white dark:bg-gray-700 text-primary dark:text-white font-bold rounded-xl shadow-sm hover:shadow-md transition-all"
           >
-            Find Workshops
+            {t('contactUs')}
           </button>
         </div>
 

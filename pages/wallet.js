@@ -2,11 +2,13 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Gift, ArrowDownLeft, Clock, CheckCircle } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Wallet() {
   const [balance, setBalance] = useState(240);
   const [transactions, setTransactions] = useState([]);
   const [redeemed, setRedeemed] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Load local storage actions
@@ -55,8 +57,8 @@ export default function Wallet() {
         <div className="absolute bottom-10 left-10 w-72 h-72 bg-accent-gold/10 rounded-full blur-3xl -z-10 pointer-events-none dark:hidden"></div>
         
         <div>
-          <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">Eco-Wallet</h1>
-          <p className="text-charcoal dark:text-gray-300 font-medium">Manage your green credits and rewards.</p>
+          <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">{t('ecoWallet')}</h1>
+          <p className="text-charcoal dark:text-gray-300 font-medium">{t('trackBalance')}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-2">
@@ -65,9 +67,9 @@ export default function Wallet() {
             <div className="absolute top-0 left-0 w-40 h-40 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 z-0"></div>
             <div className="absolute bottom-0 right-0 w-32 h-32 bg-secondary/20 rounded-full translate-x-1/3 translate-y-1/3 z-0"></div>
             
-            <span className="relative z-10 text-white/80 font-bold tracking-widest uppercase text-sm mb-2">Total Balance</span>
+            <span className="relative z-10 text-white/80 font-bold tracking-widest uppercase text-sm mb-2">{t('totalBalance')}</span>
             <div className="relative z-10 text-6xl md:text-7xl lg:text-8xl font-black mb-1 text-accent-gold">{balance}</div>
-            <span className="relative z-10 text-white/90 font-medium mb-8">Eco-Points</span>
+            <span className="relative z-10 text-white/90 font-medium mb-8">{t('ecoPoints')}</span>
 
             <button 
               onClick={handleRedeem}
@@ -85,7 +87,7 @@ export default function Wallet() {
               ) : (
                 <>
                   <Gift className="w-6 h-6" />
-                  Redeem Rewards
+                  {t('redeemRewards')}
                 </>
               )}
             </button>
@@ -94,7 +96,7 @@ export default function Wallet() {
           {/* Transaction History */}
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-charcoal dark:text-white">Transaction History</h2>
+              <h2 className="text-xl font-bold text-charcoal dark:text-white">{t('recentTransactions')}</h2>
             </div>
 
             <div className="flex flex-col gap-3">
@@ -107,14 +109,14 @@ export default function Wallet() {
                       {tx.status === 'Verified' ? <ArrowDownLeft className="w-6 h-6" /> : <Clock className="w-6 h-6" />}
                     </div>
                     <div>
-                      <h3 className="font-bold text-charcoal dark:text-white text-base">{tx.type}</h3>
+                      <h3 className="font-bold text-charcoal dark:text-white text-base">{t(tx.type) || tx.type}</h3>
                       <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
                         <span>{new Date(tx.date).toLocaleDateString()}</span>
                         <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></span>
                         {tx.status === 'Verified' ? (
-                          <span className="px-2 py-1 text-xs font-semibold text-primary bg-accent-lime/20 rounded-full">✓ Verified</span>
+                          <span className="px-2 py-1 text-xs font-semibold text-primary bg-accent-lime/20 rounded-full">✓ {t('verified')}</span>
                         ) : (
-                          <span className="px-2 py-1 text-xs font-semibold text-accent-orange bg-accent-orange/10 rounded-full">⏳ Pending</span>
+                          <span className="px-2 py-1 text-xs font-semibold text-accent-orange bg-accent-orange/10 rounded-full">⏳ {t('pending')}</span>
                         )}
                       </div>
                     </div>

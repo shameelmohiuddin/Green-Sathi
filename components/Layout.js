@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Home, PlusCircle, Wallet, BookOpen, LogOut, Info, X, Menu, Moon, Sun } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Layout({ children }) {
   const router = useRouter();
@@ -10,14 +11,23 @@ export default function Layout({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Only access localStorage on client side
     const storedRole = localStorage.getItem('greenSathiRole');
     if (!storedRole) {
       router.push('/');
-    } else {
-      setRole(storedRole);
+      return;
+    }
+    
+    setRole(storedRole);
+
+    // Route protection: Enforce role-based access
+    if (storedRole === 'verifier' && router.pathname !== '/admin' && router.pathname !== '/training') {
+      router.push('/admin');
+    } else if (storedRole === 'user' && router.pathname === '/admin') {
+      router.push('/dashboard');
     }
     
     // Load profile for modal
@@ -43,15 +53,15 @@ export default function Layout({ children }) {
   };
 
   const userNavItems = [
-    { name: 'Home', href: '/dashboard', icon: Home },
-    { name: 'Log Action', href: '/log-action', icon: PlusCircle },
-    { name: 'Wallet', href: '/wallet', icon: Wallet },
-    { name: 'Training', href: '/training', icon: BookOpen },
+    { name: t('navHome'), href: '/dashboard', icon: Home },
+    { name: t('navLog'), href: '/log-action', icon: PlusCircle },
+    { name: t('navWallet'), href: '/wallet', icon: Wallet },
+    { name: t('navTraining'), href: '/training', icon: BookOpen },
   ];
 
   const adminNavItems = [
-    { name: 'Dashboard', href: '/admin', icon: Home },
-    { name: 'Training', href: '/training', icon: BookOpen },
+    { name: t('navDashboard'), href: '/admin', icon: Home },
+    { name: t('navTraining'), href: '/training', icon: BookOpen },
   ];
 
   const navItems = role === 'verifier' ? adminNavItems : userNavItems;
@@ -64,6 +74,14 @@ export default function Layout({ children }) {
   const handleDemoSwitch = () => {
     const newRole = role === 'user' ? 'verifier' : 'user';
     localStorage.setItem('greenSathiRole', newRole);
+    
+    // Automatically switch the active profile to match the new role
+    const usersDB = JSON.parse(localStorage.getItem('greenSathiUsersDB') || '[]');
+    const newProfile = usersDB.find(u => u.role === newRole);
+    if (newProfile) {
+      localStorage.setItem('greenSathiUserProfile', JSON.stringify(newProfile));
+    }
+    
     window.location.href = newRole === 'user' ? '/dashboard' : '/admin'; // Force reload to update UI
   };
 
@@ -75,7 +93,7 @@ export default function Layout({ children }) {
         <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl w-full max-w-sm overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="bg-primary p-4 flex justify-between items-center text-white">
-              <h2 className="font-bold text-lg flex items-center gap-2"><Info className="w-5 h-5"/> Profile Details</h2>
+              <h2 className="font-bold text-lg flex items-center gap-2"><Info className="w-5 h-5"/> {t('profileDetails')}</h2>
               <button onClick={() => setShowProfileModal(false)} className="hover:bg-white/20 p-1 rounded-full transition-colors">
                 <X className="w-6 h-6" />
               </button>
@@ -83,11 +101,11 @@ export default function Layout({ children }) {
             <div className="p-6 flex flex-col gap-4">
               {userProfile ? (
                 <>
-                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">Full Name</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.fullName}</p></div>
+                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">{t('fullName')}</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.fullName}</p></div>
                   <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">Mobile Number</span><p className="font-semibold text-charcoal dark:text-white text-lg">+91 {userProfile.mobileNumber}</p></div>
-                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">Village / Gram</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.village}</p></div>
-                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">District & PIN</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.districtPin}</p></div>
-                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">ID ({userProfile.idType})</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.idNumber}</p></div>
+                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">{t('village')}</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.village}</p></div>
+                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">{t('district')}</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.districtPin}</p></div>
+                  <div><span className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase">{t('idType')} ({userProfile.idType})</span><p className="font-semibold text-charcoal dark:text-white text-lg">{userProfile.idNumber}</p></div>
                 </>
               ) : (
                 <p className="text-gray-500 dark:text-gray-400 text-center font-medium">No registration profile found.</p>
@@ -123,15 +141,15 @@ export default function Layout({ children }) {
 
         <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-2">
           <button onClick={toggleDarkMode} className="flex items-center justify-between px-4 py-3 w-full rounded-xl bg-gray-100 dark:bg-gray-800 text-charcoal dark:text-white font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
-            <span className="flex items-center"><Moon className="w-4 h-4 mr-2 hidden dark:block"/><Sun className="w-4 h-4 mr-2 dark:hidden"/> Theme</span>
-            <span className="text-xs opacity-60 uppercase">{isDarkMode ? 'Dark' : 'Light'}</span>
+            <span className="flex items-center"><Moon className="w-4 h-4 mr-2 hidden dark:block"/><Sun className="w-4 h-4 mr-2 dark:hidden"/> {t('theme')}</span>
+            <span className="text-xs opacity-60 uppercase">{isDarkMode ? t('dark') : t('light')}</span>
           </button>
           <button onClick={handleDemoSwitch} className="flex items-center justify-center px-4 py-3 w-full rounded-xl bg-charcoal dark:bg-gray-700 text-white font-bold text-sm shadow-md hover:bg-black dark:hover:bg-gray-600 transition-all">
-            Demo: Switch to {role === 'user' ? 'Verifier' : 'User'}
+            {t('demoSwitch')} {role === 'user' ? 'Verifier' : 'User'}
           </button>
           <button onClick={handleLogout} className="flex items-center px-4 py-3 w-full rounded-xl text-accent-orange hover:bg-accent-orange/10 font-semibold transition-all">
             <LogOut className="w-5 h-5 mr-3" />
-            Logout
+            {t('logout')}
           </button>
         </div>
       </aside>

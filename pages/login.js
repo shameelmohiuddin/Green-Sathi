@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Login() {
   const router = useRouter();
@@ -11,6 +12,7 @@ export default function Login() {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [toast, setToast] = useState('');
+  const { t } = useLanguage();
 
   const validOtps = ['8492', '3715', '9021', '1478', '6523', '7890', '4321', '5647', '2198', '8834'];
 
@@ -28,6 +30,11 @@ export default function Login() {
 
     if (!userExists) {
       setError("Number not registered. Please register first.");
+      return;
+    }
+
+    if (userExists.role !== role) {
+      setError(`This number belongs to a ${userExists.role}. Please switch your login mode.`);
       return;
     }
 
@@ -88,12 +95,12 @@ export default function Login() {
             className="flex items-center text-primary dark:text-gray-300 font-semibold mb-8 hover:underline w-fit"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
-            Back
+            {t('back')}
           </button>
 
           <div className="mb-10">
-            <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">Welcome Back</h1>
-            <p className="text-charcoal dark:text-gray-300 font-medium">Log in to continue your green journey.</p>
+            <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">{t('welcomeBack')}</h1>
+            <p className="text-charcoal dark:text-gray-300 font-medium">{t('loginToContinue')}</p>
           </div>
 
           {/* Role Selection */}
@@ -106,7 +113,7 @@ export default function Login() {
                   : 'text-primary/70 dark:text-gray-400 hover:text-primary dark:hover:text-white'
               }`}
             >
-              Green Sathi User
+              {t('roleUser')}
             </button>
             <button
               onClick={() => setRole('verifier')}
@@ -116,7 +123,7 @@ export default function Login() {
                   : 'text-primary/70 dark:text-gray-400 hover:text-primary dark:hover:text-white'
               }`}
             >
-              Verifier (Admin)
+              {t('roleVerifier')}
             </button>
           </div>
 
@@ -125,7 +132,7 @@ export default function Login() {
             {step === 'phone' ? (
               <form onSubmit={handleSendOtp} className="flex flex-col gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-primary dark:text-gray-300 mb-2">Phone Number</label>
+                  <label className="block text-sm font-bold text-primary dark:text-gray-300 mb-2">{t('phoneNumber')}</label>
                   <div className="flex">
                     <span className="inline-flex items-center px-4 rounded-l-2xl border border-r-0 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400 font-semibold">
                       +91
@@ -134,7 +141,7 @@ export default function Login() {
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                      placeholder="Enter your 10-digit number"
+                      placeholder={t('enterPhone')}
                       className="flex-1 min-w-0 block w-full px-4 py-4 rounded-none rounded-r-2xl text-charcoal dark:text-white bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-primary focus:border-primary outline-none"
                     />
                   </div>
@@ -144,14 +151,14 @@ export default function Login() {
                   type="submit"
                   className="w-full mt-4 py-4 bg-primary text-white font-bold rounded-2xl shadow-md hover:bg-[#2A5A46] hover:shadow-lg active:scale-95 transition-all text-lg"
                 >
-                  Send OTP
+                  {t('sendOtp')}
                 </button>
               </form>
             ) : (
               <form onSubmit={handleVerifyOtp} className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div>
-                  <label className="block text-sm font-bold text-primary dark:text-gray-300 mb-2">Enter OTP</label>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Code sent to +91 {phone} <button type="button" onClick={() => setStep('phone')} className="text-primary dark:text-accent-lime font-semibold hover:underline">Edit</button></p>
+                  <label className="block text-sm font-bold text-primary dark:text-gray-300 mb-2">{t('enterOtp')}</label>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('codeSent')}{phone} <button type="button" onClick={() => setStep('phone')} className="text-primary dark:text-accent-lime font-semibold hover:underline">{t('edit')}</button></p>
                   <input 
                     type="text"
                     value={otp}
@@ -165,7 +172,7 @@ export default function Login() {
                   type="submit"
                   className="w-full mt-4 py-4 bg-primary text-white font-bold rounded-2xl shadow-md hover:bg-[#2A5A46] hover:shadow-lg active:scale-95 transition-all text-lg"
                 >
-                  Verify & Login
+                  {t('verifyLogin')}
                 </button>
               </form>
             )}
@@ -173,12 +180,12 @@ export default function Login() {
           
           <div className="mt-8 text-center pb-8">
             <p className="text-charcoal dark:text-gray-300 font-medium">
-              Don't have an account?{' '}
+              {t('noAccount')}{' '}
               <button 
                 onClick={() => router.push('/register')}
                 className="text-primary dark:text-white font-bold hover:underline"
               >
-                Register here
+                {t('registerHere')}
               </button>
             </p>
           </div>

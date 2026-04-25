@@ -2,11 +2,13 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { Moon, Sun } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function LandingPage() {
   const router = useRouter();
   const [toast, setToast] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { t, locale, changeLanguage } = useLanguage();
 
   useEffect(() => {
     if (document.documentElement.classList.contains('dark')) {
@@ -24,11 +26,6 @@ export default function LandingPage() {
       localStorage.theme = 'dark';
       setIsDarkMode(true);
     }
-  };
-
-  const handleComingSoon = () => {
-    setToast("Language support coming soon!");
-    setTimeout(() => setToast(''), 3000);
   };
 
   return (
@@ -72,34 +69,35 @@ export default function LandingPage() {
           </div>
 
           <div className="text-center mb-12">
-            <h1 className="text-3xl lg:text-4xl font-extrabold text-primary dark:text-white mb-2 tracking-tight">Welcome to Green Sathi</h1>
-            <p className="text-charcoal dark:text-gray-300 font-medium text-lg lg:text-xl">Empowering Women through Green Action</p>
+            <h1 className="text-3xl lg:text-4xl font-extrabold text-primary dark:text-white mb-2 tracking-tight">{t('welcome')}</h1>
+            <p className="text-charcoal dark:text-gray-300 font-medium text-lg lg:text-xl">{t('empowering')}</p>
           </div>
 
           <div className="w-full flex justify-center mb-6">
             <span className="text-sm font-semibold uppercase tracking-widest text-primary dark:text-gray-400 opacity-80">
-              Select Language
+              {t('selectLang')}
             </span>
           </div>
 
           <div className="flex flex-col gap-3 w-full mb-6">
             <button 
-              className="w-full py-3 bg-primary text-white font-bold rounded-xl shadow-md text-lg flex justify-center items-center gap-2"
+              onClick={() => changeLanguage('en')}
+              className={`w-full py-3 font-bold rounded-xl shadow-md text-lg flex justify-center items-center gap-2 transition-all ${locale === 'en' ? 'bg-primary text-white' : 'border-2 border-primary/20 text-primary dark:text-gray-300 bg-secondary/30 dark:bg-gray-800 dark:border-gray-700'}`}
             >
-              English (Active)
+              English {locale === 'en' && '(Active)'}
             </button>
             <div className="flex gap-3">
               <button 
-                onClick={handleComingSoon}
-                className="flex-1 py-3 border-2 border-primary/20 text-primary dark:text-gray-300 bg-secondary/30 dark:bg-gray-800 dark:border-gray-700 font-semibold rounded-xl hover:bg-secondary/50 dark:hover:bg-gray-700 transition-all flex justify-center items-center"
+                onClick={() => changeLanguage('kn')}
+                className={`flex-1 py-3 font-semibold rounded-xl transition-all flex justify-center items-center ${locale === 'kn' ? 'bg-primary text-white shadow-md' : 'border-2 border-primary/20 text-primary dark:text-gray-300 bg-secondary/30 dark:bg-gray-800 dark:border-gray-700 hover:bg-secondary/50 dark:hover:bg-gray-700'}`}
               >
-                ಕನ್ನಡ
+                ಕನ್ನಡ {locale === 'kn' && '(Active)'}
               </button>
               <button 
-                onClick={handleComingSoon}
-                className="flex-1 py-3 border-2 border-primary/20 text-primary dark:text-gray-300 bg-secondary/30 dark:bg-gray-800 dark:border-gray-700 font-semibold rounded-xl hover:bg-secondary/50 dark:hover:bg-gray-700 transition-all flex justify-center items-center"
+                onClick={() => changeLanguage('hi')}
+                className={`flex-1 py-3 font-semibold rounded-xl transition-all flex justify-center items-center ${locale === 'hi' ? 'bg-primary text-white shadow-md' : 'border-2 border-primary/20 text-primary dark:text-gray-300 bg-secondary/30 dark:bg-gray-800 dark:border-gray-700 hover:bg-secondary/50 dark:hover:bg-gray-700'}`}
               >
-                हिंदी
+                हिंदी {locale === 'hi' && '(Active)'}
               </button>
             </div>
           </div>
@@ -109,13 +107,13 @@ export default function LandingPage() {
               onClick={() => router.push('/login')}
               className="w-full py-4 bg-primary text-white font-bold rounded-2xl shadow-lg hover:shadow-xl active:scale-95 transition-all text-lg flex justify-center items-center gap-2"
             >
-              Continue to Login
+              {t('continueLogin')}
             </button>
             <button 
               onClick={() => router.push('/register')}
               className="w-full py-4 border-2 border-primary dark:border-gray-600 text-primary dark:text-white bg-white dark:bg-gray-800 font-bold rounded-2xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 transition-all text-lg flex justify-center items-center gap-2"
             >
-              Register as New User
+              {t('registerNew')}
             </button>
           </div>
 

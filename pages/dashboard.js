@@ -2,10 +2,12 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { PlusCircle, Wallet, Users, BookOpen, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Dashboard() {
   const [userName, setUserName] = useState('Changemaker');
   const [toast, setToast] = useState('');
+  const { t } = useLanguage();
 
   useEffect(() => {
     const profile = JSON.parse(localStorage.getItem('greenSathiUserProfile'));
@@ -18,24 +20,24 @@ export default function Dashboard() {
 
   const cards = [
     {
-      title: "Log Eco-Action",
-      description: "Upload your daily green activities",
+      title: t('logEcoAction'),
+      description: t('uploadDaily'),
       icon: PlusCircle,
       href: "/log-action",
       color: "bg-white dark:bg-gray-800 text-charcoal dark:text-white border-t-4 border-t-accent-lime",
       iconBg: "bg-accent-lime/20 text-primary dark:text-accent-lime"
     },
     {
-      title: "Rewards & Credits",
-      description: "Check your Eco-Wallet balance",
+      title: t('rewardsCredits'),
+      description: t('checkWallet'),
       icon: Wallet,
       href: "/wallet",
       color: "bg-secondary dark:bg-primary text-primary dark:text-white border-t-4 border-t-accent-gold",
       iconBg: "bg-accent-gold/20 text-accent-gold"
     },
     {
-      title: "Community Updates",
-      description: "See what others are doing",
+      title: t('communityUpdates'),
+      description: t('seeOthers'),
       icon: Users,
       href: "#",
       color: "bg-white dark:bg-gray-800 border-t-4 border-t-primary dark:border-t-accent-orange text-charcoal dark:text-white",
@@ -43,8 +45,8 @@ export default function Dashboard() {
       comingSoon: true
     },
     {
-      title: "Training & Resources",
-      description: "Learn more about sustainability",
+      title: t('trainingResources'),
+      description: t('learnMore'),
       icon: BookOpen,
       href: "/training",
       color: "bg-white dark:bg-gray-800 border-t-4 border-t-primary dark:border-t-accent-lime text-charcoal dark:text-white",
@@ -78,20 +80,20 @@ export default function Dashboard() {
 
         {/* Header Section */}
         <div className="pt-4">
-          <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">Hello, {userName}! 👋</h1>
-          <p className="text-charcoal dark:text-gray-300 font-medium text-lg">Empowering Women through Green Action</p>
+          <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">{t('hello')}, {userName}! 👋</h1>
+          <p className="text-charcoal dark:text-gray-300 font-medium text-lg">{t('empowering')}</p>
         </div>
 
         {/* Highlight Card */}
         <div className="bg-gradient-to-br from-primary to-[#2A5A46] text-white rounded-3xl p-6 shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/3"></div>
           <div className="relative z-10 flex flex-col gap-2">
-            <span className="text-white/80 font-semibold text-sm uppercase tracking-wider">Your Impact</span>
+            <span className="text-white/80 font-semibold text-sm uppercase tracking-wider">{t('yourImpact')}</span>
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-black text-accent-gold">240</span>
-              <span className="text-lg font-medium">Eco-Points</span>
+              <span className="text-lg font-medium">{t('ecoPoints')}</span>
             </div>
-            <p className="text-white/90 text-sm mt-2">You're in the top 10% of contributors this week!</p>
+            <p className="text-white/90 text-sm mt-2">{t('topContributor')}</p>
           </div>
         </div>
 

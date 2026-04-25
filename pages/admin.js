@@ -2,10 +2,12 @@ import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Search, Clock, ArrowRight, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function AdminDashboard() {
   const [actions, setActions] = useState([]);
   const [filter, setFilter] = useState('Pending');
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Load local storage actions
@@ -52,8 +54,8 @@ export default function AdminDashboard() {
         {/* Header Section */}
         <div className="pt-4 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors duration-300">
           <div>
-            <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">Verifier Dashboard</h1>
-            <p className="text-charcoal dark:text-gray-300 font-medium text-lg">Review and approve user-submitted green actions.</p>
+            <h1 className="text-3xl font-extrabold text-primary dark:text-white mb-2">{t('verifierDashboard')}</h1>
+            <p className="text-charcoal dark:text-gray-300 font-medium text-lg">{t('reviewApprove')}</p>
           </div>
           
           <div className="flex bg-secondary/30 dark:bg-gray-800 p-1 rounded-xl w-fit">
@@ -65,7 +67,7 @@ export default function AdminDashboard() {
                   : 'text-primary/70 dark:text-gray-400 hover:text-primary dark:hover:text-white'
               }`}
             >
-              Pending
+              {t('pending')}
             </button>
             <button
               onClick={() => setFilter('Verified')}
@@ -75,7 +77,7 @@ export default function AdminDashboard() {
                   : 'text-primary/70 dark:text-gray-400 hover:text-primary dark:hover:text-white'
               }`}
             >
-              Verified
+              {t('verified')}
             </button>
           </div>
         </div>
@@ -84,7 +86,7 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-between">
             <div>
-              <span className="text-gray-500 dark:text-gray-400 font-bold text-sm uppercase tracking-wider">Total Actions</span>
+              <span className="text-gray-500 dark:text-gray-400 font-bold text-sm uppercase tracking-wider">{t('totalActions')}</span>
               <div className="text-4xl font-black text-primary dark:text-white mt-1">{actions.length}</div>
             </div>
           </div>
@@ -99,7 +101,7 @@ export default function AdminDashboard() {
           </div>
           <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-green-100 dark:border-gray-700 flex items-center justify-between">
             <div>
-              <span className="text-green-600 dark:text-accent-lime font-bold text-sm uppercase tracking-wider">Verified</span>
+              <span className="text-green-600 dark:text-accent-lime font-bold text-sm uppercase tracking-wider">{t('verified')}</span>
               <div className="text-4xl font-black text-green-500 dark:text-accent-lime mt-1">
                 {actions.filter(a => a.status === 'Verified').length}
               </div>
@@ -113,9 +115,9 @@ export default function AdminDashboard() {
           {filteredActions.length === 0 ? (
             <div className="bg-white dark:bg-gray-800 p-10 rounded-3xl text-center border border-dashed border-gray-200 dark:border-gray-700">
               <Search className="w-12 h-12 text-gray-300 dark:text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-400 dark:text-gray-300">No {filter.toLowerCase()} actions found.</h3>
+              <h3 className="text-xl font-bold text-gray-400 dark:text-gray-300">{t('noActions')}</h3>
               {filter === 'Pending' && (
-                <p className="text-gray-500 dark:text-gray-400 mt-2">All caught up! Wait for users to submit new actions.</p>
+                <p className="text-gray-500 dark:text-gray-400 mt-2">{t('caughtUp')}</p>
               )}
             </div>
           ) : (
@@ -131,11 +133,11 @@ export default function AdminDashboard() {
                     )}
                   </div>
                   <div>
-                    <h3 className="font-bold text-charcoal dark:text-white text-lg mb-1">{action.type}</h3>
+                    <h3 className="font-bold text-charcoal dark:text-white text-lg mb-1">{t(action.type) || action.type}</h3>
                     <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400 font-medium">
                       <span>{new Date(action.date).toLocaleDateString()}</span>
                       <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full hidden sm:block"></span>
-                      <span>Qty: <span className="font-bold text-charcoal dark:text-gray-300">{action.quantity}</span></span>
+                      <span>{t('qty')}: <span className="font-bold text-charcoal dark:text-gray-300">{action.quantity}</span></span>
                       {action.points > 0 && (
                         <>
                           <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full hidden sm:block"></span>
@@ -153,19 +155,19 @@ export default function AdminDashboard() {
                       className="flex-1 md:flex-none px-6 py-3 border border-red-200 dark:border-red-900 text-red-500 dark:text-red-400 font-bold rounded-xl hover:bg-red-50 dark:hover:bg-red-900/30 active:scale-95 transition-all flex items-center justify-center gap-2"
                     >
                       <XCircle className="w-5 h-5 dark:text-red-300" />
-                      Reject
+                      {t('reject')}
                     </button>
                     <button 
                       onClick={() => handleVerify(action.id, action.type)}
                       className="flex-1 md:flex-none px-6 py-3 bg-primary dark:bg-accent-lime text-white dark:text-charcoal font-bold rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2"
                     >
                       <CheckCircle className="w-5 h-5 dark:text-charcoal" />
-                      Verify
+                      {t('verify')}
                     </button>
                   </div>
                 ) : (
                   <div className={`px-4 py-2 rounded-xl font-bold text-sm ${action.status === 'Verified' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-accent-lime' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'}`}>
-                    {action.status}
+                    {t(action.status.toLowerCase()) || action.status}
                   </div>
                 )}
               </div>
