@@ -1,6 +1,5 @@
 <div align="center">
-  <img src="https://via.placeholder.com/600x150/1E4334/FFFFFF?text=Green+Sathi+Logo+Banner" alt="Green Sathi Logo" />
-
+  
   **A Project made during Alvas's Xypheria Hackathon**
   
   <br />
